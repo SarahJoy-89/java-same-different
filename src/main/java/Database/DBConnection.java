@@ -7,8 +7,9 @@ import java.sql.SQLException;
 public class DBConnection {
     private static final String protocol = "jdbc";
     private static final String vendorName = ":mysql:";
-    private static final String ipAddress = "//127.0.0.1:3306";
+    private static final String ipAddress = "//127.0.0.1:3306/";
     private static final String dbName = "client_schedule";
+    private static final String dbPass = "Passw0rd!";
 
     private static final String jdbcURL = protocol + vendorName + ipAddress + dbName;
 
@@ -20,7 +21,7 @@ public class DBConnection {
     public static Connection startConnection() {
         try {
             Class.forName(MYSQLJBCDriver);
-            conn = DriverManager.getConnection(jdbcURL, username, Password.getPassword());
+            conn = DriverManager.getConnection(jdbcURL, username, dbPass);
 
             System.out.println("Connection successful");
         } catch (SQLException e) {

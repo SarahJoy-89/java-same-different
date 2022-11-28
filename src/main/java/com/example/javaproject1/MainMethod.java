@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
-//import Database.DBConnection;
+import Database.DBConnection;
 
 import java.io.IOException;
 
@@ -16,11 +16,12 @@ public class MainMethod extends Application {
 
         // get the computer's default locale!
         // and then load those language messages
-        ResourceBundle rb = ResourceBundle.getBundle("com/example/javaproject1/language_files/rb");
+        //ResourceBundle rb = ResourceBundle.getBundle("com/example/javaproject1/language_files/rebu");
 
         FXMLLoader fxmlLoader = new FXMLLoader(MainMethod.class.getResource("/com/example/javaproject1/MainMenu.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle(rb.getString("welcome"));
+        stage.setTitle("wow");
+        //stage.setTitle(rb.getString("welcome"));
         stage.setScene(scene);
         stage.show();
     }
