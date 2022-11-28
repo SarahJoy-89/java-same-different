@@ -13,10 +13,10 @@ public class DBConnection {
 
     private static final String jdbcURL = protocol + vendorName + ipAddress + dbName;
 
-    private static final String MYSQLJBCDriver = "com.mysql.jdbc.Driver";
+    private static final String MYSQLJBCDriver = "com.mysql.cj.jdbc.Driver";
 
     private static final String username = "sqlUser";
-    private static Connection conn = null;
+    static Connection conn = null;
 
     public static Connection startConnection() {
         try {

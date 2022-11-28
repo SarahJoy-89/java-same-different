@@ -16,7 +16,7 @@ public class MainMethod extends Application {
 
         // get the computer's default locale!
         // and then load those language messages
-        //ResourceBundle rb = ResourceBundle.getBundle("com/example/javaproject1/language_files/rebu");
+        //ResourceBundle rb = ResourceBundle.getBundle("/com/example/javaproject1/language_files/rebu");
 
         FXMLLoader fxmlLoader = new FXMLLoader(MainMethod.class.getResource("/com/example/javaproject1/MainMenu.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
@@ -29,13 +29,13 @@ public class MainMethod extends Application {
     public static void main(String[] args) {
 
         //open Connection to DB
-        //DBConnection.startConnection();
+        DBConnection.startConnection();
         // To test the French locale uncomment the following line
         // Locale.setDefault(new Locale("fr");
 
         launch();
 
-       // DBConnection.closeConnection();
+       DBConnection.closeConnection();
     }
 
 

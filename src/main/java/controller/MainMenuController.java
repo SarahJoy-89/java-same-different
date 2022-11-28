@@ -13,6 +13,10 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,6 +25,7 @@ import java.time.ZoneId;
 import java.io.FileWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import Database.DBConnection;
 
 
 public class MainMenuController implements Initializable {
@@ -30,11 +35,16 @@ public class MainMenuController implements Initializable {
 
     String language;
 
+    static Connection conn = DBConnection.getConnection();
+    private Statement stmt;
+
+
+
     // Check language to determine labels
-    ResourceBundle rb = ResourceBundle.getBundle("language_files/rb");
+    // ResourceBundle rb = ResourceBundle.getBundle("/com/example/javaproject1/language_files/rebu");
 
     // log file in the user's home directory
-    String fileName = System.getProperty("user.home") + "log.txt";
+    String fileName = System.getProperty("user.home") + "login_activity.txt";
     File logFile = new File(fileName);
 
     @FXML
@@ -58,10 +68,50 @@ public class MainMenuController implements Initializable {
 
     @FXML
     void clearfields(ActionEvent event) {
+        password.clear();
+        username.clear();
     }
 
     @FXML
     void onActionLogIn(ActionEvent event) throws IOException {
+        String uname = username.getText();
+        String pword = password.getText();
+
+        ResultSet rs;
+
+        // Get ready to write to the log!
+        // Get the date and time in string format for the log entry
+        LocalDateTime currentMoment = LocalDateTime.now();
+        DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String formattedDate = currentMoment.format(formatDate);
+
+        // Do some DB stuff to authenticate
+        try {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT User_Name, Password FROM Users");
+
+            while (rs.next()) {
+                if (uname.equals(rs.getObject(1)) && pword.equals(rs.getObject(2))) {
+                    // do some shit?
+                    // Create log entry for positive log in
+                    String logLine = "User " + uname + "successfully logged in at " + formattedDate;
+
+                    // write to log
+                    try (FileWriter logFileWriter = new FileWriter(logFile, true)) {
+                        logFileWriter.append(logLine);
+                    } catch (IOException ioe) {
+                        System.err.println("Error writing to log file");
+                    }
+                }
+            }
+            // TO DO: write 'negative' logging line if you run out of users!
+
+
+        } catch (SQLException sqe) {
+            sqe.printStackTrace();
+        }
+
+
 
         }
 
@@ -79,29 +129,13 @@ public class MainMenuController implements Initializable {
         // Set label timezone to user timezone
         timezone.setText(s);
 
-        user_name.setText(rb.getString("user_name"));
-        pass_word.setText(rb.getString("password"));
-        time_zone.setText(rb.getString("timezone"));
+        //user_name.setText(rb.getString("user_name"));
+        //pass_word.setText(rb.getString("password"));
+        //time_zone.setText(rb.getString("timezone"));
+        user_name.setText("user name");
+        pass_word.setText("password");
+        time_zone.setText("timezone");
 
-        String uname = username.getText();
-        String pword = password.getText();
-
-        // Do some DB stuff to authenticate
-
-        // Get the date and time in string format for the log entry
-        LocalDateTime currentMoment = LocalDateTime.now();
-        DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        String formattedDate = currentMoment.format(formatDate);
-
-        // Create log entry for positive log in
-        String logLine = "User " + uname + "successfully logged in at " + formattedDate;
-
-        // write to log
-        try (FileWriter logFileWriter = new FileWriter(logFile, true)) {
-            logFileWriter.append(logLine);
-        } catch (IOException ioe) {
-            System.err.println("Error writing to log file");
-        }
     }
 
     private void displayAlert(int alertType) {
