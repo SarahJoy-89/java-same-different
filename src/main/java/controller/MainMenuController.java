@@ -44,7 +44,7 @@ public class MainMenuController implements Initializable {
     // ResourceBundle rb = ResourceBundle.getBundle("/com/example/javaproject1/language_files/rebu");
 
     // log file in the user's home directory
-    String fileName = System.getProperty("user.home") + "login_activity.txt";
+    String fileName = System.getProperty("user.home") + "/login_activity.txt";
     File logFile = new File(fileName);
 
     @FXML
@@ -92,9 +92,8 @@ public class MainMenuController implements Initializable {
 
             while (rs.next()) {
                 if (uname.equals(rs.getObject(1)) && pword.equals(rs.getObject(2))) {
-                    // do some shit?
                     // Create log entry for positive log in
-                    String logLine = "User " + uname + "successfully logged in at " + formattedDate;
+                    String logLine = "User " + uname + " successfully logged in at " + formattedDate;
 
                     // write to log
                     try (FileWriter logFileWriter = new FileWriter(logFile, true)) {
@@ -105,6 +104,9 @@ public class MainMenuController implements Initializable {
                 }
             }
             // TO DO: write 'negative' logging line if you run out of users!
+            try (FileWriter logFileWriter = new FileWriter(logFile, true)) {
+
+            }
 
 
         } catch (SQLException sqe) {
