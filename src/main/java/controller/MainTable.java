@@ -101,7 +101,7 @@ public class MainTable {
     }
 
     @FXML
-    void onAxctionViewMonth(ActionEvent event) {
+    void onActionViewMonth(ActionEvent event) {
 
     }
 

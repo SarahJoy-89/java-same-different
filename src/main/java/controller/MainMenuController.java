@@ -101,6 +101,11 @@ public class MainMenuController implements Initializable {
                     } catch (IOException ioe) {
                         System.err.println("Error writing to log file");
                     }
+                    // Now go to the next frame
+                    stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                    scene = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/javaproject1/MainTable.fxml")) );
+                    stage.setScene(new Scene(scene));
+                    stage.show();
                 }
             }
             //write 'negative' logging line if no match
