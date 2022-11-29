@@ -93,7 +93,7 @@ public class MainMenuController implements Initializable {
             while (rs.next()) {
                 if (uname.equals(rs.getObject(1)) && pword.equals(rs.getObject(2))) {
                     // Create log entry for positive log in
-                    String logLine = "User " + uname + " successfully logged in at " + formattedDate;
+                    String logLine = "User " + uname + " successfully logged in at " + formattedDate + "\n";
 
                     // write to log
                     try (FileWriter logFileWriter = new FileWriter(logFile, true)) {
@@ -103,9 +103,16 @@ public class MainMenuController implements Initializable {
                     }
                 }
             }
-            // TO DO: write 'negative' logging line if you run out of users!
+            //write 'negative' logging line if no match
+            String logLine = "User " + uname + " gave invalid log in at " + formattedDate + "\n";
             try (FileWriter logFileWriter = new FileWriter(logFile, true)) {
+                logFileWriter.append(logLine);
+                // also clear out the text fields
+                password.clear();
+                username.clear();
 
+            } catch (IOException ioe) {
+                System.err.println("Error writing to log file");
             }
 
 
