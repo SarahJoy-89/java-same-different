@@ -105,4 +105,9 @@ public class MainTable {
 
     }
 
+    /*@Override
+    public void initialize () {
+        Appt_view.setContent();
+    }*/
+
 }
