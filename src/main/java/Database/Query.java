@@ -31,7 +31,7 @@ public class Query {
 
     public static String getContactName(int id) {
         String s = "";
-        query = "SLECT User_Name from USERS where User_ID = " + id;
+        query = "SELECT User_Name from USERS where User_ID = " + id;
 
         try {
             rs = statement.executeQuery(query);
@@ -41,5 +41,33 @@ public class Query {
         }
 
         return s;
+    }
+
+    public static String getCustomerName(int id) {
+        String s = "";
+        query = "SELECT Customer_Name from CUSTOMERS where Customer_ID = " + id;
+
+        try {
+            rs = statement.executeQuery(query);
+            s = rs.getString(1);
+        } catch (SQLException sqle) {
+            System.err.print(sqle);
+        }
+
+        return s;
+    }
+
+    public static int getCustomerID(String cust_name) {
+        int id = 0;
+        query = "SELECT Customer_ID from CUSTOMERS where Customer_Name = \"" + cust_name + "\"";
+
+        try {
+            rs = statement.executeQuery(query);
+            id = rs.getInt(1);
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+
+        return id;
     }
 }
