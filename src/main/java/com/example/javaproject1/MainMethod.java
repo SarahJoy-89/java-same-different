@@ -17,7 +17,7 @@ public class MainMethod extends Application {
 
         // get the computer's default locale!
         // and then load those language messages
-        // ResourceBundle rb = ResourceBundle.getBundle("language_files/rebu");
+        ResourceBundle rb = ResourceBundle.getBundle("language_files/rebu");
 
         FXMLLoader fxmlLoader = new FXMLLoader(MainMethod.class.getResource("/com/example/javaproject1/MainMenu.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
