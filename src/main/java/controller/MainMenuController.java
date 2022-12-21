@@ -136,19 +136,16 @@ public class MainMenuController implements Initializable {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL url, ResourceBundle rb) {
         ZoneId z = ZoneId.systemDefault();
         String s = z.getId();
 
         // Set label timezone to user timezone
         timezone.setText(s);
 
-        //user_name.setText(rb.getString("user_name"));
-        //pass_word.setText(rb.getString("password"));
-        //time_zone.setText(rb.getString("timezone"));
-        user_name.setText("user name");
-        pass_word.setText("password");
-        time_zone.setText("timezone");
+        user_name.setText(rb.getString("user_name"));
+        pass_word.setText(rb.getString("password"));
+        time_zone.setText(rb.getString("timezone"));
 
     }
 
