@@ -11,6 +11,7 @@ import Database.DBConnection;
 import java.io.IOException;
 
 public class MainMethod extends Application {
+
     @Override
     public void start(Stage stage) throws IOException {
 

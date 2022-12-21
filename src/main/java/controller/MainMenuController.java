@@ -41,7 +41,7 @@ public class MainMenuController implements Initializable {
 
 
     // Check language to determine labels
-    // ResourceBundle rb = ResourceBundle.getBundle("/com/example/javaproject1/language_files/rebu");
+    // ResourceBundle rb = ResourceBundle.getBundle("language_files/rebu");
 
     // log file in the user's home directory
     String fileName = System.getProperty("user.home") + "/login_activity.txt";

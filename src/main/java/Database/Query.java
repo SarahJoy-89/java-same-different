@@ -70,4 +70,22 @@ public class Query {
 
         return id;
     }
+
+    public static boolean checkPassword(int user_id, String pword) {
+        query = "SELECT Customer_ID, Password from CUSTOMERS where Customer_ID = " + user_id;
+
+        try {
+            rs = statement.executeQuery(query);
+            if (rs.getString(2).equals(pword)) {
+                return true;
+            } else
+                return false;
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+
+        // shouldn't ever get here
+        // but need a return value to satisfy Java
+        return false;
+    }
 }
