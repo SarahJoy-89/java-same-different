@@ -26,6 +26,7 @@ import java.io.FileWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import Database.DBConnection;
+import Database.Query;
 
 
 public class MainMenuController implements Initializable {
@@ -77,7 +78,7 @@ public class MainMenuController implements Initializable {
         String uname = username.getText();
         String pword = password.getText();
 
-        ResultSet rs;
+        // ResultSet rs;
 
         // Get ready to write to the log!
         // Get the date and time in string format for the log entry
@@ -86,28 +87,24 @@ public class MainMenuController implements Initializable {
         String formattedDate = currentMoment.format(formatDate);
 
         // Do some DB stuff to authenticate
-        try {
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT User_Name, Password FROM Users");
+        int id = Query.getContactID(uname);
 
-            while (rs.next()) {
-                if (uname.equals(rs.getObject(1)) && pword.equals(rs.getObject(2))) {
-                    // Create log entry for positive log in
-                    String logLine = "User " + uname + " successfully logged in at " + formattedDate + "\n";
+        if (Query.checkPassword(id, pword)) {
+            // Create log entry for positive log in
+            String logLine = "User " + uname + " successfully logged in at " + formattedDate + "\n";
 
-                    // write to log
-                    try (FileWriter logFileWriter = new FileWriter(logFile, true)) {
-                        logFileWriter.append(logLine);
-                    } catch (IOException ioe) {
-                        System.err.println("Error writing to log file");
-                    }
-                    // Now go to the next frame
-                    stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-                    scene = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/javaproject1/MainTable.fxml")) );
-                    stage.setScene(new Scene(scene));
-                    stage.show();
-                }
+            // write to log
+            try (FileWriter logFileWriter = new FileWriter(logFile, true)) {
+                logFileWriter.append(logLine);
+            } catch (IOException ioe) {
+                System.err.println("Error writing to log file");
             }
+            // Now go to the next frame
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/javaproject1/MainTable.fxml")) );
+            stage.setScene(new Scene(scene));
+            stage.show();
+        } else {
             //write 'negative' logging line if no match
             String logLine = "User " + uname + " gave invalid log in at " + formattedDate + "\n";
             try (FileWriter logFileWriter = new FileWriter(logFile, true)) {
@@ -120,13 +117,7 @@ public class MainMenuController implements Initializable {
                 System.err.println("Error writing to log file");
             }
 
-
-        } catch (SQLException sqe) {
-            sqe.printStackTrace();
-        }
-
-
-
+          }
         }
 
 
