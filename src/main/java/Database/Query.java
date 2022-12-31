@@ -1,9 +1,8 @@
 package Database;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.ResultSet;
-
 import static Database.DBConnection.conn;
 
 public class Query {
@@ -20,9 +19,12 @@ public class Query {
     public static int getContactID(String username) {
         int i = 0;
         query = "SELECT User_ID from USERS where User_Name = \"" + username + "\"";
+
         try {
+            statement = conn.createStatement();
             rs = statement.executeQuery(query);
-            i = rs.getInt(1);
+            i = rs.getInt("User_ID");
+            System.out.println("Do I get here??");
         } catch (SQLException sqle) {
             System.err.println(sqle);
         }
@@ -34,6 +36,7 @@ public class Query {
         query = "SELECT User_Name from USERS where User_ID = " + id;
 
         try {
+            statement = conn.createStatement();
             rs = statement.executeQuery(query);
             s = rs.getString(1);
         } catch (SQLException sqle) {
@@ -48,6 +51,7 @@ public class Query {
         query = "SELECT Customer_Name from CUSTOMERS where Customer_ID = " + id;
 
         try {
+            statement = conn.createStatement();
             rs = statement.executeQuery(query);
             s = rs.getString(1);
         } catch (SQLException sqle) {
@@ -62,6 +66,7 @@ public class Query {
         query = "SELECT Customer_ID from CUSTOMERS where Customer_Name = \"" + cust_name + "\"";
 
         try {
+            statement = conn.createStatement();
             rs = statement.executeQuery(query);
             id = rs.getInt(1);
         } catch (SQLException sqle) {
@@ -75,6 +80,7 @@ public class Query {
         query = "SELECT Customer_ID, Password from CUSTOMERS where Customer_ID = " + user_id;
 
         try {
+            statement = conn.createStatement();
             rs = statement.executeQuery(query);
             if (rs.getString(2).equals(pword)) {
                 return true;
