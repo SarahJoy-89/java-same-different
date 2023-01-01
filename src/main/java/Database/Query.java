@@ -23,8 +23,9 @@ public class Query {
         try {
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
+            // increment pointer one line!
+            rs.next();
             i = rs.getInt("User_ID");
-            System.out.println("Do I get here??");
         } catch (SQLException sqle) {
             System.err.println(sqle);
         }
@@ -38,6 +39,7 @@ public class Query {
         try {
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
+            rs.next();
             s = rs.getString(1);
         } catch (SQLException sqle) {
             System.err.print(sqle);
@@ -53,6 +55,7 @@ public class Query {
         try {
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
+            rs.next();
             s = rs.getString(1);
         } catch (SQLException sqle) {
             System.err.print(sqle);
@@ -68,6 +71,7 @@ public class Query {
         try {
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
+            rs.next();
             id = rs.getInt(1);
         } catch (SQLException sqle) {
             System.err.println(sqle);
@@ -77,11 +81,12 @@ public class Query {
     }
 
     public static boolean checkPassword(int user_id, String pword) {
-        query = "SELECT Customer_ID, Password from CUSTOMERS where Customer_ID = " + user_id;
+        query = "SELECT User_ID, Password from USERS where User_ID = " + user_id;
 
         try {
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
+            rs.next();
             if (rs.getString(2).equals(pword)) {
                 return true;
             } else
