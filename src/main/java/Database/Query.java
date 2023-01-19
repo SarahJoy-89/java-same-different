@@ -99,4 +99,32 @@ public class Query {
         // but need a return value to satisfy Java
         return false;
     }
+
+    public static void deleteCustomer(int CustomerID) {
+        query = "DELETE from CUSTOMERS where Customer_ID=" + customerID;
+
+        try {
+            statement = conn.createStatement();
+            // nothing to return so not gathering a return value
+            // just execute and delete!
+            statement.executeQuery(query);
+
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+    }
+
+    public static int addCustomer(String custName, String address, String postCode, String phNumber, String fld, String country) {
+
+        int key = 0;
+        query = "INSERT into Customers (" + custName + ", " + address + ", " + phNumber + ", " + fld + ", " + country + ")";
+        try {
+            statement = conn.createStatement();
+            rs = statement.executeQuery(query);
+            key = rs.ge
+
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+    }
 }

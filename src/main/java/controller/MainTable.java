@@ -106,7 +106,7 @@ public class MainTable {
     }
 
     /*@Override
-    public void initialize () {
+    public void init () {
         Appt_view.setContent();
     }*/
 
