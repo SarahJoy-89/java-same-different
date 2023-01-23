@@ -13,6 +13,7 @@ public class Query {
     /**
      * Helper function that takes a string for username and returns the user_id value
      * from the database
+     *
      * @param username
      * @return int
      */
@@ -100,7 +101,7 @@ public class Query {
         return false;
     }
 
-    public static void deleteCustomer(int CustomerID) {
+    public static void deleteCustomer(int customerID) {
         query = "DELETE from CUSTOMERS where Customer_ID=" + customerID;
 
         try {
@@ -114,15 +115,66 @@ public class Query {
         }
     }
 
-    public static int addCustomer(String custName, String address, String postCode, String phNumber, String fld, String country) {
+    public static void addCustomer(String custName, String address, String postCode, String phNumber, String fld, String country) {
 
         int key = 0;
         query = "INSERT into Customers (" + custName + ", " + address + ", " + phNumber + ", " + fld + ", " + country + ")";
         try {
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
-            key = rs.ge
+            // key = rs.ge
 
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+    }
+
+    /**
+     * Used to return the list of countries from the country table to
+     * populate a combo box
+     *
+     * @return ResultSet The set of countries
+     */
+    public static ResultSet getCountries() {
+        query = "SELECT Country from Countries";
+        try {
+            statement = conn.createStatement();
+            rs = statement.executeQuery(query);
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+
+        return rs;
+    }
+
+    /**
+     * This method is used to populate combo box for first level divisions
+     *
+     * @param countryID ID from Database of a country
+     * @return ResultSet Set of all first level division areas in that country
+     */
+    public static ResultSet getFLD(int countryID) {
+        query = "SELECT Division from first_level_divisions WHERE CountryID=\"" + countryID + "\"";
+        try {
+            statement = conn.createStatement();
+            rs = statement.executeQuery(query);
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        }
+
+        return rs;
+    }
+
+    /**
+     * Deletes all appointments connected to a customer ID
+     *
+     * @param customerID The ID of a Customer about to be deleted
+     */
+    public static void deleteAppointments(int customerID) {
+        query = "DELETE from appointments WHERE Customer_ID=" + customerID;
+        try {
+            statement = conn.createStatement();
+            statement.executeQuery(query);
         } catch (SQLException sqle) {
             System.err.println(sqle);
         }

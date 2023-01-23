@@ -37,4 +37,6 @@ public class Appointment {
         user_ID = ui;
         contact_ID = coi;
     }
+
+
 }
