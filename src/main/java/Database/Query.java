@@ -179,4 +179,23 @@ public class Query {
             System.err.println(sqle);
         }
     }
+
+    /**
+     * Returns a String for the country name fetched from Countries table
+     * @param countryID foreign key
+     * @return name of country
+     */
+    public static String getCountry(int countryID) {
+        String country = "";
+        query = "SELECT from countries WHERE Country_ID=" + countryID;
+        try {
+            statement = conn.createStatement();
+            rs = statement.executeQuery(query);
+            rs.next();
+            country = rs.getString(2);
+        } catch(SQLException sqle) {
+            System.err.println(sqle);
+        }
+        return country;
+    }
 }

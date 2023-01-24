@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainTable">
    <children>
       <TabPane layoutX="2.0" layoutY="27.0" prefHeight="520.0" prefWidth="843.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -97,7 +97,7 @@
                           </rowConstraints>
                            <children>
                               <RadioButton fx:id="view_week" mnemonicParsing="false" onAction="#onActionViewWeek" text="View Week" />
-                              <RadioButton fx:id="view_month" mnemonicParsing="false" onAction="#onAxctionViewMonth" text="View Month" GridPane.columnIndex="1" />
+                              <RadioButton fx:id="view_month" mnemonicParsing="false" onAction="#onActionViewMonth" text="View Month" GridPane.columnIndex="1" />
                               <RadioButton fx:id="view_all" mnemonicParsing="false" onAction="#onActionViewAll" text="View All" GridPane.columnIndex="2" />
                            </children>
                         </GridPane>

@@ -1,18 +1,24 @@
 package controller;
 
+import Database.DBConnection;
+import Database.Query;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
 
-public class MainTable {
+public class MainTable implements Initializable {
 
     @FXML
     private Tab Appt_view;
@@ -49,6 +55,10 @@ public class MainTable {
 
     @FXML
     private RadioButton view_week;
+
+    static Connection conn = DBConnection.getConnection();
+    Stage stage;
+    Parent scene;
 
     @FXML
     void onActionAddAppt(ActionEvent event) {
@@ -105,9 +115,10 @@ public class MainTable {
 
     }
 
-    /*@Override
-    public void init () {
-        Appt_view.setContent();
-    }*/
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+
+
+    }
 
 }
