@@ -198,4 +198,20 @@ public class Query {
         }
         return country;
     }
+
+    /**
+     * Method gets all customers in database, returns ResultSet
+     *  with intention of filling a Table
+     * @return ResultSet set of all Customers
+     */
+    public ResultSet getCustomers() {
+        query = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, Division_ID from customers";
+        try {
+            statement = conn.createStatement();
+            rs = statement.executeQuery(query);
+        } catch(SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        return rs;
+    }
 }
