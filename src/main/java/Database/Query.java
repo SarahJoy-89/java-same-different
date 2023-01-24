@@ -14,8 +14,8 @@ public class Query {
      * Helper function that takes a string for username and returns the user_id value
      * from the database
      *
-     * @param username
-     * @return int
+     * @param username This is like a user's name
+     * @return int This will be the User ID
      */
     public static int getContactID(String username) {
         int i = 0;
@@ -28,7 +28,7 @@ public class Query {
             rs.next();
             i = rs.getInt("User_ID");
         } catch (SQLException sqle) {
-            System.err.println(sqle);
+            sqle.printStackTrace();
         }
         return i;
     }
@@ -43,7 +43,7 @@ public class Query {
             rs.next();
             s = rs.getString(1);
         } catch (SQLException sqle) {
-            System.err.print(sqle);
+            sqle.printStackTrace();
         }
 
         return s;
@@ -59,7 +59,7 @@ public class Query {
             rs.next();
             s = rs.getString(1);
         } catch (SQLException sqle) {
-            System.err.print(sqle);
+            sqle.printStackTrace();
         }
 
         return s;
@@ -75,7 +75,7 @@ public class Query {
             rs.next();
             id = rs.getInt(1);
         } catch (SQLException sqle) {
-            System.err.println(sqle);
+            sqle.printStackTrace();
         }
 
         return id;
@@ -93,7 +93,7 @@ public class Query {
             } else
                 return false;
         } catch (SQLException sqle) {
-            System.err.println(sqle);
+            sqle.printStackTrace();
         }
 
         // shouldn't ever get here
@@ -111,7 +111,7 @@ public class Query {
             statement.executeQuery(query);
 
         } catch (SQLException sqle) {
-            System.err.println(sqle);
+            sqle.printStackTrace();
         }
     }
 
@@ -125,7 +125,7 @@ public class Query {
             // key = rs.ge
 
         } catch (SQLException sqle) {
-            System.err.println(sqle);
+            sqle.printStackTrace();
         }
     }
 
@@ -141,7 +141,7 @@ public class Query {
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
         } catch (SQLException sqle) {
-            System.err.println(sqle);
+            sqle.printStackTrace();
         }
 
         return rs;
@@ -159,7 +159,7 @@ public class Query {
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
         } catch (SQLException sqle) {
-            System.err.println(sqle);
+            sqle.printStackTrace();
         }
 
         return rs;
@@ -176,7 +176,7 @@ public class Query {
             statement = conn.createStatement();
             statement.executeQuery(query);
         } catch (SQLException sqle) {
-            System.err.println(sqle);
+            sqle.printStackTrace();
         }
     }
 
@@ -194,7 +194,7 @@ public class Query {
             rs.next();
             country = rs.getString(2);
         } catch(SQLException sqle) {
-            System.err.println(sqle);
+            sqle.printStackTrace();
         }
         return country;
     }

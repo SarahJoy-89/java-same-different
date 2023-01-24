@@ -1,37 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainTable">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainTable">
    <children>
       <TabPane layoutX="2.0" layoutY="27.0" prefHeight="520.0" prefWidth="843.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Customer VIew">
+          <Tab id="customerTab" fx:id="customer_tab" text="Customer View">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="452.0" prefWidth="807.0">
                      <children>
-                        <TableView layoutX="24.0" layoutY="37.0">
+                        <TableView layoutX="24.0" layoutY="37.0" prefHeight="400.0" prefWidth="758.0">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="Appt ID" />
-                            <TableColumn prefWidth="84.0" text="Title" />
-                              <TableColumn prefWidth="83.0" text="Description" />
-                              <TableColumn prefWidth="95.0" text="Location" />
-                              <TableColumn prefWidth="58.0" text="Contact" />
-                              <TableColumn prefWidth="55.0" text="Type" />
-                              <TableColumn prefWidth="100.0" text="Start Date/Time" />
-                              <TableColumn prefWidth="96.0" text="End Date/Time" />
-                              <TableColumn prefWidth="79.0" text="Customer ID" />
-                              <TableColumn prefWidth="68.0" text="User ID" />
+                            <TableColumn prefWidth="76.0" text="Customer ID" />
+                            <TableColumn prefWidth="175.0" text="Name" />
+                              <TableColumn prefWidth="196.0" text="Address" />
+                              <TableColumn prefWidth="106.0" text="Postal Code" />
+                              <TableColumn prefWidth="102.0" text="Phone" />
+                              <TableColumn prefWidth="102.0" text="First Level Division" />
                           </columns>
                         </TableView>
                         <GridPane layoutX="46.0" layoutY="445.0" prefHeight="30.0" prefWidth="384.0">

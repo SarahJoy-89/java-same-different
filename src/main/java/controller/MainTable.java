@@ -21,6 +21,9 @@ import java.util.ResourceBundle;
 public class MainTable implements Initializable {
 
     @FXML
+    private Tab customer_tab;
+
+    @FXML
     private Tab Appt_view;
 
     @FXML
@@ -117,7 +120,6 @@ public class MainTable implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
 
     }
 
