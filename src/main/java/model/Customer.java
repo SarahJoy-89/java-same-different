@@ -4,50 +4,45 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 public class Customer {
-    private int customer_ID;
-    private String customer_name;
+    private int customerID;
+    private String customerName;
     private String address;
-    private String postal_code;
-    private String phone_number;
-    private Timestamp create_date;
-    private String created_by;
-    private Timestamp last_update;
-    private String update_by;
-    private int division_ID;
+    private String postalCode;
+    private String phoneNumber;
+    private String firstLevelDivision;
 
-    public Customer(int ci, String cn, String ad, String pc, String pn, Timestamp cd, String cb, Timestamp lu, String ub, int di) {
-        customer_ID = ci;
-        customer_name = cn;
+    public Customer(int ci, String cn, String ad, String pc, String pn, String di) {
+        customerID = ci;
+        customerName = cn;
         address = ad;
-        postal_code = pc;
-        phone_number = pn;
-        create_date = cd;
-        created_by = cb;
-        last_update = lu;
-        update_by = ub;
-        division_ID = di;
+        postalCode = pc;
+        phoneNumber = pn;
+        firstLevelDivision = di;
 
     }
 
     public int getCustomer_ID() {
-        return customer_ID;
+        return customerID;
     }
 
     public String getAddress() {
         return address;
     }
 
-    public String getCustomer_name() {
-        return customer_name;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setLast_update(Timestamp ts) {
-        // So this probably won't work, is likely going to need some
-        // sort of work done in the DB classes
-        last_update = ts;
+    public String getPostalCode(){
+        return postalCode;
     }
 
-    public void setUpdate_by(String updater) {
-        update_by = updater;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
+
+    public String getFirstLevelDivision() {
+        return firstLevelDivision;
+    }
+
 }

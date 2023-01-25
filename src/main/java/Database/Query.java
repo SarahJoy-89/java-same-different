@@ -1,5 +1,9 @@
 package Database;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import model.Customer;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -199,19 +203,24 @@ public class Query {
         return country;
     }
 
-    /**
-     * Method gets all customers in database, returns ResultSet
-     *  with intention of filling a Table
-     * @return ResultSet set of all Customers
-     */
-    public ResultSet getCustomers() {
-        query = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, Division_ID from customers";
+    public static ObservableList<Customer> getCustomers() {
+        ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
+
+        query = "SELECT customers.Customer_ID, customers.Customer_Name, customers.Address, customers.Postal_Code, "
+        + "customers.Phone, first_level_divisions.Division from customers, first_level_divisions WHERE "
+        + "customers.Division_ID=first_level_divisions.Division_ID";
+
         try {
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
-        } catch(SQLException sqle) {
+            while (rs.next()) {
+                allCustomers.add(new Customer(rs.getInt(1), rs.getString(2),rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getString(6)));
+            }
+
+        } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-        return rs;
+        return allCustomers;
     }
 }
