@@ -11,7 +11,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="452.0" prefWidth="807.0">
                      <children>
-                        <TableView layoutX="24.0" layoutY="37.0" prefHeight="400.0" prefWidth="758.0">
+                        <TableView fx:id="customerTable" layoutX="24.0" layoutY="37.0" prefHeight="400.0" prefWidth="758.0">
                           <columns>
                             <TableColumn fx:id="custIDColumn" editable="false" prefWidth="76.0" text="Customer ID" />
                             <TableColumn fx:id="custNameColumn" prefWidth="175.0" text="Name" />

@@ -6,11 +6,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.Customer;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -58,6 +56,15 @@ public class MainTable implements Initializable {
 
     @FXML
     private RadioButton view_week;
+
+    @FXML private TableColumn<Customer, Integer> custIDColumn;
+    @FXML private TableColumn<Customer, String> custNameColumn;
+    @FXML private TableColumn<Customer, String> custAddColumn;
+    @FXML private TableColumn<Customer, String> custPCColumn;
+    @FXML private TableColumn<Customer, String> custPhoneColumn;
+    @FXML private TableColumn<Customer, String> custFLDColumn;
+
+    @FXML private TableView<Customer> customerTable;
 
     static Connection conn = DBConnection.getConnection();
     Stage stage;

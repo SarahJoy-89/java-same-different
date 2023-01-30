@@ -206,6 +206,12 @@ public class Query {
         return country;
     }
 
+    /**
+     * Populates and returns a reference to an Observable List object for
+     * the purposes of populating cells in a Table. Also pulls foreign key data
+     * from associated database tables
+     * @return ObservableList containing all customer data
+     */
     public static ObservableList<Customer> getCustomers() {
         ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
 
@@ -227,6 +233,11 @@ public class Query {
         return allCustomers;
     }
 
+    /**
+     * Populates and returns an ObservableList full of all appointments in the appointment data
+     * as well as data from other tables associated with the foreign keys
+     * @return ObservableList with all appointments
+     */
     public static ObservableList<Appointment> getAppointments() {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
