@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Customer;
 
@@ -127,6 +128,15 @@ public class MainTable implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        customerTable.setItems(Query.getCustomers());
+
+        custIDColumn.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
+        custNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        custAddColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+        custPCColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        custPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        custFLDColumn.setCellValueFactory(new PropertyValueFactory<>("firstLevelDivision"));
+
 
     }
 

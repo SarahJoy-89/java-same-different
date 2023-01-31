@@ -88,7 +88,7 @@ public class MainMenuController implements Initializable {
 
         // Do some DB stuff to authenticate
         int id = Query.getContactID(uname);
-        System.out.println("User ID: " + id + ", Password:" + pword +", Username: " + uname);
+        // System.out.println("User ID: " + id + ", Password:" + pword +", Username: " + uname);
 
         if (Query.checkPassword(id, pword)) {
             // Create log entry for positive log in
