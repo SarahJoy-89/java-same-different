@@ -241,18 +241,18 @@ public class Query {
     public static ObservableList<Appointment> getAppointments() {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
-        query = "SELECT appointments.Appointment_ID, appointments.Title, appointments.Description, appointments.Location, appointments.Type, "
-                + "appointments.Start, appointments.End, customers.Customer_Name, users.User_Name, contacts.Contact_Name from appointments, customers, "
-                + "users, contacts WHERE appointments.Customer_ID=customers.Customer_ID AND appointments.User_ID=users.User_ID "
-                + "AND appointments.Contact_ID=contacts.Contact_ID";
+        query = "SELECT appointments.Appointment_ID, appointments.Title, appointments.Description, appointments.Location, contacts.Contact_Name, " +
+                "appointments.Type,"
+                + "appointments.Start, appointments.End, appointments.Customer_ID, appointments.User_ID from appointments, "
+                + "contacts WHERE appointments.Contact_ID=contacts.Contact_ID";
 
         try {
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
             while (rs.next()) {
                 allAppointments.add(new Appointment(rs.getInt(1), rs.getString(2), rs.getString(3),
-                        rs.getString(4), rs.getString(5), rs.getDate(6), rs.getDate(7),
-                        rs.getString(8), rs.getString(9), rs.getString(10)));
+                        rs.getString(4), rs.getString(5), rs.getString(6), rs.getTimestamp(7),
+                        rs.getTimestamp(8), rs.getInt(9), rs.getInt(10)));
             }
         } catch (SQLException sqle){
             sqle.printStackTrace();

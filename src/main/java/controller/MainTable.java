@@ -9,11 +9,14 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.Appointment;
 import model.Customer;
 
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 
@@ -65,7 +68,19 @@ public class MainTable implements Initializable {
     @FXML private TableColumn<Customer, String> custPhoneColumn;
     @FXML private TableColumn<Customer, String> custFLDColumn;
 
+    @FXML private TableColumn<Appointment, Integer> aptIDCol;
+    @FXML private TableColumn<Appointment, String> titleCol;
+    @FXML private TableColumn<Appointment, String> descCol;
+    @FXML private TableColumn<Appointment, String> locCol;
+    @FXML private TableColumn<Appointment, String> conCol;
+    @FXML private TableColumn<Appointment, String> typCol;
+    @FXML private TableColumn<Appointment, ZonedDateTime> startCol;
+    @FXML private TableColumn<Appointment, ZonedDateTime> endCol;
+    @FXML private TableColumn<Appointment, Integer> aptCustNameCol;
+    @FXML private TableColumn<Appointment, Integer> userNameCol;
+
     @FXML private TableView<Customer> customerTable;
+    @FXML private TableView<Appointment> appointmentTable;
 
     static Connection conn = DBConnection.getConnection();
     Stage stage;
@@ -136,6 +151,22 @@ public class MainTable implements Initializable {
         custPCColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
         custPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
         custFLDColumn.setCellValueFactory(new PropertyValueFactory<>("firstLevelDivision"));
+
+
+        appointmentTable.setItems(Query.getAppointments());
+
+        aptIDCol.setCellValueFactory(new PropertyValueFactory<>("appointment_ID"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        locCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+        conCol.setCellValueFactory(new PropertyValueFactory<>("contact"));
+        typCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        startCol.setCellValueFactory(new PropertyValueFactory<>("startLocal"));
+        endCol.setCellValueFactory(new PropertyValueFactory<>("endLocal"));
+        aptCustNameCol.setCellValueFactory(new PropertyValueFactory<>("customer"));
+        userNameCol.setCellValueFactory(new PropertyValueFactory<>("user"));
+
+
 
 
     }
