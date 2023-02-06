@@ -1,5 +1,7 @@
 package model;
 
+import Database.Query;
+
 import java.sql.Time;
 import java.sql.Timestamp;
 
@@ -10,6 +12,7 @@ public class Customer {
     private String postalCode;
     private String phoneNumber;
     private String firstLevelDivision;
+    private String country = "";
 
     public Customer(int ci, String cn, String ad, String pc, String pn, String di) {
         customerID = ci;
@@ -45,4 +48,15 @@ public class Customer {
         return firstLevelDivision;
     }
 
+    public String getCountry() {
+        if (country.isEmpty()) {
+            setCountry(firstLevelDivision);
+        }
+
+        return country;
+    }
+
+    public void setCountry(String fld) {
+        country = Query.getCountry(fld);
+    }
 }

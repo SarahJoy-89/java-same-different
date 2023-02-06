@@ -87,7 +87,7 @@ public class MainMenuController implements Initializable {
         String formattedDate = currentMoment.format(formatDate);
 
         // Do some DB stuff to authenticate
-        int id = Query.getContactID(uname);
+        int id = Query.getUserID(uname);
         // System.out.println("User ID: " + id + ", Password:" + pword +", Username: " + uname);
 
         if (Query.checkPassword(id, pword)) {

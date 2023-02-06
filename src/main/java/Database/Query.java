@@ -24,7 +24,7 @@ public class Query {
      * @param username This is like a user's name
      * @return int This will be the User ID
      */
-    public static int getContactID(String username) {
+    public static int getUserID(String username) {
         int i = 0;
         query = "SELECT User_ID from USERS where User_Name = \"" + username + "\"";
 
@@ -122,10 +122,10 @@ public class Query {
         }
     }
 
-    public static void addCustomer(String custName, String address, String postCode, String phNumber, String fld, String country) {
+    public static void addCustomer(String custName, String address, String postCode, String phNumber, String fld) {
 
         int key = 0;
-        query = "INSERT into Customers (" + custName + ", " + address + ", " + phNumber + ", " + fld + ", " + country + ")";
+        query = "INSERT into Customers (" + custName + ", " + address + ", " + phNumber + ", " + fld + ")";
         try {
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
@@ -157,11 +157,12 @@ public class Query {
     /**
      * This method is used to populate combo box for first level divisions
      *
-     * @param countryID ID from Database of a country
+     * @param countryName Name from Database of a country
      * @return ResultSet Set of all first level division areas in that country
      */
-    public static ResultSet getFLD(int countryID) {
-        query = "SELECT Division from first_level_divisions WHERE CountryID=\"" + countryID + "\"";
+    public static ResultSet getFLD(String countryName) {
+        query = "SELECT first_level_divisions.Division from first_level_divisions, countries "
+                + "WHERE first_level_divisions.Country_ID=countries.Country_ID AND countries.Country=\"" + countryName +"\"";
         try {
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
@@ -200,6 +201,21 @@ public class Query {
             rs = statement.executeQuery(query);
             rs.next();
             country = rs.getString(2);
+        } catch(SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        return country;
+    }
+
+    public static String getCountry(String fld) {
+        String country = "";
+        query = "SELECT countries.Country from countries, first_level_divisions WHERE countries.Country_ID=first_level_divisions.Country_ID AND Division=\"" + fld + "\"";
+
+        try {
+            statement = conn.createStatement();
+            rs = statement.executeQuery(query);
+            rs.next();
+            country = rs.getString(1);
         } catch(SQLException sqle) {
             sqle.printStackTrace();
         }

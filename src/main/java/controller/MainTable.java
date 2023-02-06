@@ -4,7 +4,9 @@ import Database.DBConnection;
 import Database.Query;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -12,11 +14,13 @@ import javafx.stage.Stage;
 import model.Appointment;
 import model.Customer;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 
@@ -117,8 +121,19 @@ public class MainTable implements Initializable {
     }
 
     @FXML
-    void onActionModCust(ActionEvent event) {
+    void onActionModCust(ActionEvent event) throws IOException {
+        Customer customer = customerTable.getSelectionModel().getSelectedItem();
 
+        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation((getClass().getResource("/com/example/javaproject1/ModifyCustomer.fxml")));
+        Parent scene = loader.load();
+
+        stage.setScene(new Scene(scene));
+        stage.show();
+
+        ModifyCustomer controller = loader.getController();
+        controller.initData(customer);
     }
 
     @FXML
