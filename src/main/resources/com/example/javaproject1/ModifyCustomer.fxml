@@ -39,7 +39,7 @@
             <TextField fx:id="editAddress" onAction="#onActionEditAddress" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="postalCode" onAction="#onActionEditPostalCode" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="phonenumber" onAction="#onActionEditPhone" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <ComboBox fx:id="countryBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <ComboBox fx:id="countryBox" onAction="#onActionChangeCountry" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <ComboBox fx:id="division" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
          </children>
       </GridPane>

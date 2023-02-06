@@ -53,6 +53,7 @@ public class ModifyCustomer {
 
     Stage stage;
     Parent scene;
+    Customer localCustomer;
 
     @FXML
     void onActionCancel(ActionEvent event) throws IOException {
@@ -64,27 +65,41 @@ public class ModifyCustomer {
 
     @FXML
     void onActionEditAddress(ActionEvent event) {
-
+        localCustomer.setAddress(editAddress.getText());
     }
 
     @FXML
     void onActionEditName(ActionEvent event) {
-
+        localCustomer.setCustomerName(editName.getText());
     }
 
     @FXML
     void onActionEditPhone(ActionEvent event) {
-
+        localCustomer.setPhoneNumber(phonenumber.getText());
     }
+
 
     @FXML
     void onActionEditPostalCode(ActionEvent event) {
+        localCustomer.setPostalCode(postalCode.getText());
+    }
+
+    @FXML
+    void onActionSave(ActionEvent event) throws IOException {
+        // update the database with data from temp customer object
+        Query.updateCustomer(localCustomer);
+        // then go back to the Main Table
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/javaproject1/MainTable.fxml")));
+        stage.setScene(new Scene(scene));
+        stage.show();
 
     }
 
     @FXML
-    void onActionSave(ActionEvent event) {
-
+    void onActionChangeCountry(ActionEvent event) {
+        division.getItems().clear();
+        updateDivisionList(countryBox.getValue().toString());
     }
 
     public void initData(Customer customer) {
@@ -106,11 +121,20 @@ public class ModifyCustomer {
             sqle.printStackTrace();
         }
         // String countryName = customer.getCountry();
-        System.out.print((customer.getCountry()));
+
         countryBox.getSelectionModel().select(customer.getCountry());
 
         // now populate the FLD list
-        rs = Query.getFLD(customer.getCountry());
+       // rs = Query.getFLD(countryBox.getValue().toString());
+        updateDivisionList(countryBox.getValue().toString());
+        division.getSelectionModel().select(customer.getFirstLevelDivision());
+        localCustomer = customer;
+
+
+    }
+
+    private void updateDivisionList(String countryName) {
+        ResultSet rs = Query.getFLD(countryName);
 
         try {
             while (rs.next()) {
@@ -119,9 +143,6 @@ public class ModifyCustomer {
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-
-        division.getSelectionModel().select(customer.getFirstLevelDivision());
-
 
     }
 

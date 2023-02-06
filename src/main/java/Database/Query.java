@@ -136,6 +136,20 @@ public class Query {
         }
     }
 
+    public static void updateCustomer(Customer customer) {
+        query = "UPDATE customers \n" +
+                "SET customer_name=\"" + customer.getCustomerName() + ", address=\"" + customer.getAddress() +
+                "\", postal_code=\"" + customer.getPostalCode() + "\", phone=\"" + customer.getPhoneNumber() +
+                "\", division_id=" + customer.getDivisionID() + " WHERE customer_id=" + customer.getCustomer_ID();
+        try {
+            statement = conn.createStatement();
+            statement.executeQuery(query);
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+
+    }
+
     /**
      * Used to return the list of countries from the country table to
      * populate a combo box
@@ -205,6 +219,34 @@ public class Query {
             sqle.printStackTrace();
         }
         return country;
+    }
+
+    public static int getDivisionID(String fld) {
+        int id = 0;
+        query = "SELECT Division_ID from first_level_divisions WHERE Division=\"" + fld + "\"";
+        try {
+            statement = conn.createStatement();
+            rs = statement.executeQuery(query);
+            rs.next();
+            id = rs.getInt(1);
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        return id;
+    }
+
+    public static int getCountryID(String country) {
+        int id = 0;
+        query = "SELECT Country_ID from countries WHERE Country=" + country + "\"";
+        try {
+            statement = conn.createStatement();
+            rs = statement.executeQuery(query);
+            rs.next();
+            id = rs.getInt(1);
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        return id;
     }
 
     public static String getCountry(String fld) {
