@@ -13,7 +13,7 @@ public class Customer {
     private String phoneNumber;
     private String firstLevelDivision;
     private String country = "";
-    private int divisionID;
+
 
     public Customer(int ci, String cn, String ad, String pc, String pn, String di) {
         customerID = ci;
@@ -23,6 +23,14 @@ public class Customer {
         phoneNumber = pn;
         firstLevelDivision = di;
 
+    }
+
+    public Customer() {
+        customerName = "";
+        address = "";
+        postalCode = "";
+        phoneNumber = "";
+        firstLevelDivision = "";
     }
 
     public int getCustomer_ID() {
@@ -57,9 +65,10 @@ public class Customer {
         return country;
     }
 
-    public int getDivisionID() {
-        return divisionID;
+    public void setCustomerID(int id) {
+        customerID = id;
     }
+
 
     public void setCountry(String fld) {
         country = Query.getCountry(fld);
@@ -83,6 +92,5 @@ public class Customer {
 
     public void setFirstLevelDivision(String fld) {
         firstLevelDivision = fld;
-        divisionID = Query.getDivisionID(fld);
     }
 }

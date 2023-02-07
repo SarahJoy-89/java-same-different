@@ -53,7 +53,6 @@ public class ModifyCustomer {
 
     Stage stage;
     Parent scene;
-    Customer localCustomer;
 
     @FXML
     void onActionCancel(ActionEvent event) throws IOException {
@@ -65,29 +64,38 @@ public class ModifyCustomer {
 
     @FXML
     void onActionEditAddress(ActionEvent event) {
-        localCustomer.setAddress(editAddress.getText());
+
     }
 
     @FXML
     void onActionEditName(ActionEvent event) {
-        localCustomer.setCustomerName(editName.getText());
+
     }
 
     @FXML
     void onActionEditPhone(ActionEvent event) {
-        localCustomer.setPhoneNumber(phonenumber.getText());
+
     }
 
 
     @FXML
     void onActionEditPostalCode(ActionEvent event) {
-        localCustomer.setPostalCode(postalCode.getText());
+
     }
 
     @FXML
     void onActionSave(ActionEvent event) throws IOException {
+        // Initialize new Customer object to throw into DB
+        Customer tempCustomer = new Customer();
+
+        tempCustomer.setCustomerID(Integer.parseInt(custID.getText()));
+        tempCustomer.setCustomerName(editName.getText());
+        tempCustomer.setAddress(editAddress.getText());
+        tempCustomer.setPostalCode(postalCode.getText());
+        tempCustomer.setPhoneNumber(phonenumber.getText());
+        tempCustomer.setFirstLevelDivision(division.getValue().toString());
         // update the database with data from temp customer object
-        Query.updateCustomer(localCustomer);
+        Query.updateCustomer(tempCustomer);
         // then go back to the Main Table
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/javaproject1/MainTable.fxml")));
@@ -128,7 +136,6 @@ public class ModifyCustomer {
        // rs = Query.getFLD(countryBox.getValue().toString());
         updateDivisionList(countryBox.getValue().toString());
         division.getSelectionModel().select(customer.getFirstLevelDivision());
-        localCustomer = customer;
 
 
     }

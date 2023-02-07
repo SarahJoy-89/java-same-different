@@ -138,17 +138,32 @@ public class Query {
 
     public static void updateCustomer(Customer customer) {
         query = "UPDATE customers \n" +
-                "SET customer_name=\"" + customer.getCustomerName() + ", address=\"" + customer.getAddress() +
+                "SET customer_name=\"" + customer.getCustomerName() + "\", address=\"" + customer.getAddress() +
                 "\", postal_code=\"" + customer.getPostalCode() + "\", phone=\"" + customer.getPhoneNumber() +
-                "\", division_id=" + customer.getDivisionID() + " WHERE customer_id=" + customer.getCustomer_ID();
+                "\", division_id= (SELECT division_ID from first_level_divisions WHERE first_level_divisions.division=\"" + customer.getFirstLevelDivision() + "\") " +
+                "\nWHERE Customer_ID=" + customer.getCustomer_ID();
+        System.out.println(query);
+        try {
+            statement = conn.createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+
+    }
+    /*
+    public static void addCustomer(Customer customer) {
+        query = "INSERT INTO customers (customer_name, address, postal_code, phone, division_ID)" +
+                "VALUES (\"" + customer.getCustomerName() + "\", \"" + customer.getAddress() + "\", \""
+                + customer.getPostalCode() + "\", \"" + customer.getPhoneNumber() + "\", " + customer.getDivisionID() + ")";
+
         try {
             statement = conn.createStatement();
             statement.executeQuery(query);
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-
-    }
+    }*/
 
     /**
      * Used to return the list of countries from the country table to

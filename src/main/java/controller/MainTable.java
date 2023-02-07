@@ -96,7 +96,15 @@ public class MainTable implements Initializable {
     }
 
     @FXML
-    void onActionAddCust(ActionEvent event) {
+    void onActionAddCust(ActionEvent event) throws IOException {
+
+        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation((getClass().getResource("/com/example/javaproject1/AddCustomer.fxml")));
+        Parent scene = loader.load();
+
+        stage.setScene(new Scene(scene));
+        stage.show();
 
     }
 
