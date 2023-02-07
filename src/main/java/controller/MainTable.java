@@ -106,6 +106,9 @@ public class MainTable implements Initializable {
         stage.setScene(new Scene(scene));
         stage.show();
 
+        AddCustomer controller = loader.getController();
+        controller.initData();
+
     }
 
     @FXML
