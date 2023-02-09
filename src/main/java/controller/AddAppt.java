@@ -8,6 +8,8 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
+import java.util.ResourceBundle;
+
 public class AddAppt {
 
         @FXML
@@ -35,7 +37,7 @@ public class AddAppt {
         private Spinner<?> endtimemin;
 
         @FXML
-        private TextField location;
+        private TextField loc;
 
         @FXML
         private Button save;
@@ -57,6 +59,9 @@ public class AddAppt {
 
         @FXML
         private TextField user_id;
+
+        private int u_id;
+        private ResourceBundle resourceBundle;
 
         @FXML
         void contactID(ActionEvent event) {
@@ -110,6 +115,12 @@ public class AddAppt {
 
         @FXML
         void userID(ActionEvent event) {
+
+        }
+
+        public void init(int id, ResourceBundle rb) {
+                u_id = id;
+                resourceBundle = rb;
 
         }
 

@@ -7,6 +7,9 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import model.Appointment;
+
+import java.util.ResourceBundle;
 
 public class EditAppt {
 
@@ -35,7 +38,7 @@ public class EditAppt {
     private Spinner<?> endtimemin;
 
     @FXML
-    private TextField location;
+    private TextField locat;
 
     @FXML
     private Button save;
@@ -130,6 +133,22 @@ public class EditAppt {
 
     @FXML
     void userID(ActionEvent event) {
+
+    }
+
+    public void initData(Appointment appointment, int id, ResourceBundle rb) {
+        appt_id.setText(String.valueOf(appointment.getAppointment_ID()));
+        title.setText(appointment.getTitle());
+        locat.setText(appointment.getLocation());
+        description.setText(appointment.getDescription());
+        type.setText(appointment.getType());
+        customer_id.setText(String.valueOf(appointment.getAppointment_ID()));
+        contact_id.setText(appointment.getContact());
+        user_id.setText(String.valueOf(appointment.getUser()));
+        startdate.setValue(appointment.getStartLocal().toLocalDate());
+        end_date.setValue(appointment.getEndLocal().toLocalDate());
+
+
 
     }
 

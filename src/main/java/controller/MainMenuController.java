@@ -39,6 +39,8 @@ public class MainMenuController implements Initializable {
     static Connection conn = DBConnection.getConnection();
     private Statement stmt;
 
+    private ResourceBundle resourceBundle;
+
 
 
     // Check language to determine labels
@@ -102,9 +104,16 @@ public class MainMenuController implements Initializable {
             }
             // Now go to the next frame
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            scene = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/javaproject1/MainTable.fxml")) );
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation((getClass().getResource("/com/example/javaproject1/MainTable.fxml")));
+            Parent scene = loader.load();
+
             stage.setScene(new Scene(scene));
             stage.show();
+
+            MainTable controller = loader.getController();
+            controller.init(id, resourceBundle);
+
         } else {
             //write 'negative' logging line if no match
             String logLine = "User " + uname + " gave invalid log in at " + formattedDate + "\n";
@@ -131,6 +140,7 @@ public class MainMenuController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         ZoneId z = ZoneId.systemDefault();
         String s = z.getId();
+        resourceBundle = rb;
 
         // Set label timezone to user timezone
         timezone.setText(s);

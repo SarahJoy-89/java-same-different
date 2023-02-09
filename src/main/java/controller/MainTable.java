@@ -2,6 +2,7 @@ package controller;
 
 import Database.DBConnection;
 import Database.Query;
+import com.example.javaproject1.MainMethod;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,7 +25,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 
-public class MainTable implements Initializable {
+public class MainTable  {
 
     @FXML
     private Tab customer_tab;
@@ -89,10 +90,22 @@ public class MainTable implements Initializable {
     static Connection conn = DBConnection.getConnection();
     Stage stage;
     Parent scene;
+    private int id;
+    private ResourceBundle resourceBundle;
+
 
     @FXML
-    void onActionAddAppt(ActionEvent event) {
+    void onActionAddAppt(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation((getClass().getResource("/com/example/javaproject1/AddAppt.fxml")));
+        Parent scene = loader.load();
 
+        stage.setScene(new Scene(scene));
+        stage.show();
+
+        AddAppt controller = loader.getController();
+        controller.init(id, resourceBundle);
     }
 
     @FXML
@@ -107,7 +120,7 @@ public class MainTable implements Initializable {
         stage.show();
 
         AddCustomer controller = loader.getController();
-        controller.initData();
+        controller.initData(id, resourceBundle);
 
     }
 
@@ -119,15 +132,37 @@ public class MainTable implements Initializable {
     @FXML
     void onActionDelCust(ActionEvent event) {
 
-    }
-
-    @FXML
-    void onActionGoBack(ActionEvent event) {
 
     }
 
     @FXML
-    void onActionModAppt(ActionEvent event) {
+    void onActionGoBack(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(MainTable.class.getResource("/com/example/javaproject1/MainMenu.fxml"), resourceBundle);
+        Scene scene = new Scene(fxmlLoader.load());
+
+        stage.setTitle(resourceBundle.getString("welcome"));
+        stage.setScene(scene);
+        stage.show();
+
+    }
+
+    @FXML
+    void onActionModAppt(ActionEvent event) throws IOException {
+
+        Appointment appointment = appointmentTable.getSelectionModel().getSelectedItem();
+
+        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation((getClass().getResource("/com/example/javaproject1/EditAppt.fxml")));
+        Parent scene = loader.load();
+
+        stage.setScene(new Scene(scene));
+        stage.show();
+
+        EditAppt controller = loader.getController();
+        controller.initData(appointment, id, resourceBundle);
+
 
     }
 
@@ -144,7 +179,7 @@ public class MainTable implements Initializable {
         stage.show();
 
         ModifyCustomer controller = loader.getController();
-        controller.initData(customer);
+        controller.initData(customer, id, resourceBundle);
     }
 
     @FXML
@@ -167,8 +202,11 @@ public class MainTable implements Initializable {
 
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void init(int uid, ResourceBundle rb) {
+
+        id = uid;
+        resourceBundle = rb;
+
         customerTable.setItems(Query.getCustomers());
 
         custIDColumn.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
@@ -192,7 +230,7 @@ public class MainTable implements Initializable {
         aptCustNameCol.setCellValueFactory(new PropertyValueFactory<>("customer"));
         userNameCol.setCellValueFactory(new PropertyValueFactory<>("user"));
 
-
+        view_all.setSelected(true);
 
 
     }

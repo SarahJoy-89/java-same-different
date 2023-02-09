@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 
 public class AddCustomer {
@@ -47,6 +48,8 @@ public class AddCustomer {
 
     Stage stage;
     Parent scene;
+    private int user_id;
+    private ResourceBundle resourceBundle;
 
     @FXML
     void onActionAddAddress(ActionEvent event) {
@@ -70,9 +73,15 @@ public class AddCustomer {
     @FXML
     void onActionCancel(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/javaproject1/MainTable.fxml")));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation((getClass().getResource("/com/example/javaproject1/MainTable.fxml")));
+        Parent scene = loader.load();
+
         stage.setScene(new Scene(scene));
         stage.show();
+
+        MainTable controller = loader.getController();
+        controller.init(user_id, resourceBundle);
 
     }
 
@@ -111,13 +120,20 @@ public class AddCustomer {
 
         // then go back to MainMenu
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/javaproject1/MainTable.fxml")));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation((getClass().getResource("/com/example/javaproject1/MainTable.fxml")));
+        Parent scene = loader.load();
+
         stage.setScene(new Scene(scene));
         stage.show();
 
+        MainTable controller = loader.getController();
+        controller.init(user_id, resourceBundle);
     }
 
-    public void initData() {
+    public void initData(int id, ResourceBundle rb) {
+        user_id = id;
+        resourceBundle = rb;
         ResultSet rs = Query.getCountries();
 
         // populate Country list
