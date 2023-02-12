@@ -46,11 +46,11 @@
             <TextField fx:id="description" onAction="#editdescription" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="locat" onAction="#editlocation" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="type" onAction="#edittype" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="contact_id" onAction="#contactID" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <TextField fx:id="customer_id" onAction="#customerID" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <TextField fx:id="user_id" onAction="#userID" GridPane.columnIndex="1" GridPane.rowIndex="7" />
             <DatePicker fx:id="startdate" onAction="#editstartdate" GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <DatePicker fx:id="end_date" onAction="#editenddate" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+            <ComboBox fx:id="contacts" prefHeight="25.0" prefWidth="169.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
       <Label layoutX="300.0" layoutY="334.0" text="End Time" />

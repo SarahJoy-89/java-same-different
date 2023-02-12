@@ -1,13 +1,21 @@
 package controller;
 
+import Database.Query;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import model.Appointment;
 
+import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ResourceBundle;
 
 public class EditAppt {
@@ -19,7 +27,7 @@ public class EditAppt {
     private Button cancel;
 
     @FXML
-    private TextField contact_id;
+    private ComboBox<String> contacts;
 
     @FXML
     private TextField customer_id;
@@ -60,6 +68,7 @@ public class EditAppt {
     @FXML
     private TextField user_id;
 
+    Stage stage;
     ObservableList<String> hours = FXCollections.observableArrayList();
     ObservableList<String> minutes = FXCollections.observableArrayList();
     int u_id;
@@ -127,8 +136,17 @@ public class EditAppt {
     }
 
     @FXML
-    void onActionCancel(ActionEvent event) {
+    void onActionCancel(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation((getClass().getResource("/com/example/javaproject1/MainTable.fxml")));
+        Parent scene = loader.load();
 
+        stage.setScene(new Scene(scene));
+        stage.show();
+
+        MainTable controller = loader.getController();
+        controller.init(u_id, resourceBundle);
     }
 
     @FXML
@@ -156,6 +174,11 @@ public class EditAppt {
         endHour.setItems(hours);
         endMinute.setItems(minutes);
 
+        contacts.setItems(Query.getContacts());
+
+        DateTimeFormatter hourFormat = DateTimeFormatter.ofPattern("KK");
+        DateTimeFormatter minuteFormat = DateTimeFormatter.ofPattern("mm");
+
 
         appt_id.setText(String.valueOf(appointment.getAppointment_ID()));
         title.setText(appointment.getTitle());
@@ -163,16 +186,16 @@ public class EditAppt {
         description.setText(appointment.getDescription());
         type.setText(appointment.getType());
         customer_id.setText(String.valueOf(appointment.getAppointment_ID()));
-        contact_id.setText(appointment.getContact());
+        contacts.setValue(appointment.getContact());
         user_id.setText(String.valueOf(appointment.getUser()));
         startdate.setValue(appointment.getStartLocal().toLocalDate());
         end_date.setValue(appointment.getEndLocal().toLocalDate());
 
 
-        startHour.setValue(String.valueOf(appointment.getStartLocal().getHour()));
-        startMinute.setValue(String.valueOf(appointment.getStartLocal().getMinute()));
-        endHour.setValue(String.valueOf(appointment.getEndLocal().getHour()));
-        endMinute.setValue(String.valueOf(appointment.getEndLocal().getMinute()));
+        startHour.setValue(appointment.getStartLocal().format(hourFormat));
+        startMinute.setValue(appointment.getStartLocal().format(minuteFormat));
+        endHour.setValue(appointment.getEndLocal().format(hourFormat));
+        endMinute.setValue(appointment.getEndLocal().format(minuteFormat));
 
 
 

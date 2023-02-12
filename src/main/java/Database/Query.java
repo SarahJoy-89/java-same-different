@@ -211,7 +211,7 @@ public class Query {
         query = "DELETE from appointments WHERE Customer_ID=" + customerID;
         try {
             statement = conn.createStatement();
-            statement.executeQuery(query);
+            statement.executeUpdate(query);
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
@@ -331,5 +331,21 @@ public class Query {
             sqle.printStackTrace();
         }
         return allAppointments;
+    }
+
+    public static ObservableList<String> getContacts() {
+        ObservableList<String> allContacts = FXCollections.observableArrayList();
+        query = "SELECT Contact_Name from contacts";
+
+        try {
+            statement = conn.createStatement();
+            rs = statement.executeQuery(query);
+            while(rs.next()) {
+                allContacts.add(rs.getString(1));
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        return allContacts;
     }
 }

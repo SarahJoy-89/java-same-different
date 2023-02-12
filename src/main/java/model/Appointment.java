@@ -23,10 +23,14 @@ public class Appointment {
     private LocalDateTime startLocal;
     private LocalDateTime endLocal;
 
+    private Timestamp startDB;
+    private Timestamp endDB;
+
+
     /**
      * Take data pulled from the database courtesy of the Query class and converts it to an Appointment
      * for ease of use in populating views, working with times, etc. Uses private method to convert the
-     * database's UTC datetime (wrapped in a Timestamp) to time in the same timezone as the user
+     * database's UTC datetime (wrapped in a Timestamp) to time in the same timezone as the user.
      * @param ai appointment ID
      * @param tt title of appointment
      * @param d short description of appointment
@@ -45,14 +49,29 @@ public class Appointment {
         location = l;
         type = ty;
         // The times in the DB are in UTC so these ZonedDateTime members are set to that
-        start = ZonedDateTime.of(s.toLocalDateTime(), ZoneId.of("UTC"));
-        end = ZonedDateTime.of(e.toLocalDateTime(), ZoneId.of("UTC"));
+        start = convertTStoZDT(s);
+        end = convertTStoZDT(e);
         customer = cu;
         user = u;
         contact = con;
 
         startLocal = convertZDTtoLocal(start);
         endLocal = convertZDTtoLocal(end);
+
+        // keep these values just in case
+        startDB = s;
+        endDB = e;
+    }
+
+    public Appointment() {
+        appointment_ID = 0;
+        title = "";
+        description = "";
+        location = "";
+        type = "";
+        customer = 0;
+        user = 0;
+
     }
 
     public int getAppointment_ID() {
@@ -99,6 +118,58 @@ public class Appointment {
 
     public LocalDateTime getEndLocal() {return endLocal; }
 
+    public Timestamp getStartDB() {
+        return startDB;
+    }
+
+    public Timestamp getEndDB() {
+        return endDB;
+    }
+
+    public void setAppointment_ID(int id) {
+        appointment_ID = id;
+    }
+
+    public void setTitle(String t) {
+        title = t;
+    }
+
+    public void setDescription(String des) {
+        description = des;
+    }
+
+    public void setLocation(String loc) {
+        location = loc;
+    }
+
+    public void setType(String t) {
+        type = t;
+    }
+
+    public void setUser(int u) {
+        user = u;
+    }
+
+    public void setContact(String c) {
+        contact = c;
+    }
+
+    public void setCustomer(int customer) {
+        this.customer = customer;
+    }
+
+    public void setStart(LocalDateTime ldt) {
+        startLocal = ldt;
+        start = convertYourLocaltoUTC(startLocal);
+        startDB = Timestamp.from(start.toInstant());
+    }
+
+    public void setEnd(LocalDateTime ldt) {
+        endLocal = ldt;
+        end = convertYourLocaltoUTC(endLocal);
+        endDB = Timestamp.from(end.toInstant());
+    }
+
     /**
      * Converts input to the equivalent local time (e.g. UTC time to American/Mountain time)
      * @param zdt This is presumed to be UTC straight from the database
@@ -106,6 +177,34 @@ public class Appointment {
      */
     private LocalDateTime convertZDTtoLocal(ZonedDateTime zdt) {
         return zdt.withZoneSameInstant(ZoneId.of(ZoneId.systemDefault().toString())).toLocalDateTime();
+    }
+
+    private ZonedDateTime convertTStoZDT(Timestamp ts) {
+        return ZonedDateTime.of(ts.toLocalDateTime(), ZoneId.of("UTC"));
+    }
+
+    private ZonedDateTime convertYourLocaltoUTC(LocalDateTime yourLocal) {
+        // first get a Zoned Date Time in the local timezone
+        ZonedDateTime zdtLocal = yourLocal.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
+        return zdtLocal.withZoneSameInstant(ZoneId.of("UTC"));
+    }
+
+
+
+    public boolean isDuringOfficeHours() {
+
+        int easternStart = start.withZoneSameInstant(ZoneId.of("EST")).getHour();
+        int easternEnd = end.withZoneSameInstant(ZoneId.of("EST")).getHour();
+
+        // if the appointment start time is before 8 AM EST or after 10 for some reason
+        if (easternStart < 8 || easternStart > 22) {
+            return false;
+        }
+        // or if the appointment end time is after 10 PM EST
+        if (easternEnd > 22) {
+            return false;
+        }
+        return true;
     }
 
 }
