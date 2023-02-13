@@ -165,6 +165,36 @@ public class Query {
         }
     }
 
+    public static void updateAppointment(Appointment appointment) {
+        query = "UPDATE appointments \n" +
+                "SET Title=\"" + appointment.getTitle() + "\", Description=\"" + appointment.getDescription() + "\", Location=\"" +
+                appointment.getLocation() + "\", Type=\"" + appointment.getType() + "\", Start=\"" + appointment.getStartDB() + "\", End=\"" +
+                appointment.getEndDB() + "\", Customer_ID=" + appointment.getCustomer() + ", User_ID=" + appointment.getUser() +
+                ", Contact_ID= (SELECT Contact_ID from contacts WHERE contacts.Contact_Name=\"" + appointment.getContact() + "\") \n" +
+                "WHERE Appointment_ID=" + appointment.getAppointment_ID();
+
+        try {
+            statement = conn.createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException sqle){
+            sqle.printStackTrace();
+        }
+    }
+
+    public static void addAppointment(Appointment appointment) {
+        query = "INSERT into appointments (Title, Description, Type, Start, End, Customer_ID, User_ID, Contact_ID) " +
+                "VALUES (\"" + appointment.getTitle() + "\", \"" + appointment.getDescription() + "\", \"" + appointment.getType() + "\", \"" +
+                appointment.getStartDB() + "\", \"" + appointment.getEndDB() + "\", " + appointment.getCustomer() + ", " + appointment.getUser() +
+                ", (SELECT Contact_ID from contacts WHERE contacts.Contact_Name=\"" + appointment.getContact() + "\") )";
+
+        try {
+            statement = conn.createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+    }
+
     /**
      * Used to return the list of countries from the country table to
      * populate a combo box

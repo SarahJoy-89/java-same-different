@@ -36,7 +36,7 @@
             <Label text="Description" GridPane.rowIndex="2" />
             <Label text="Location " GridPane.rowIndex="3" />
             <Label text="Type" GridPane.rowIndex="4" />
-            <Label text="Contact ID" GridPane.rowIndex="5" />
+            <Label text="Contact" GridPane.rowIndex="5" />
             <Label text="Customer ID" GridPane.rowIndex="6" />
             <Label text="User ID" GridPane.rowIndex="7" />
             <Label text="Start Date" GridPane.rowIndex="8" />
@@ -46,20 +46,20 @@
             <TextField fx:id="description" onAction="#enterdescription" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="loc" onAction="#enterlocation" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="type" onAction="#entertype" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="contact_id" onAction="#contactID" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <TextField fx:id="customer_id" onAction="#customerID" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <TextField fx:id="user_id" onAction="#userID" GridPane.columnIndex="1" GridPane.rowIndex="7" />
             <DatePicker fx:id="startdate" onAction="#enterstartdate" GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <DatePicker fx:id="end_date" onAction="#enterenddate" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+            <ComboBox fx:id="contacts" prefHeight="25.0" prefWidth="169.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
       <Label layoutX="300.0" layoutY="334.0" text="End Time" />
       <Label layoutX="28.0" layoutY="334.0" text="Start Time" />
       <Button fx:id="save" layoutX="378.0" layoutY="376.0" mnemonicParsing="false" onAction="#onActionSave" text="Save" />
       <Button fx:id="Cancel" layoutX="443.0" layoutY="377.0" mnemonicParsing="false" onAction="#onActionCancel" text="Cancel" />
-      <ComboBox fx:id="startHour" layoutX="126.0" layoutY="330.0" prefHeight="25.0" prefWidth="86.0" />
-      <ComboBox fx:id="startMinute" layoutX="214.0" layoutY="330.0" prefHeight="25.0" prefWidth="80.0" />
       <ComboBox fx:id="endHour" layoutX="367.0" layoutY="330.0" prefHeight="25.0" prefWidth="86.0" />
       <ComboBox fx:id="endMinute" layoutX="455.0" layoutY="330.0" prefHeight="25.0" prefWidth="86.0" />
+      <ComboBox fx:id="startHour" layoutX="128.0" layoutY="330.0" prefHeight="25.0" prefWidth="86.0" />
+      <ComboBox fx:id="startMinute" layoutX="214.0" layoutY="330.0" prefHeight="25.0" prefWidth="86.0" />
    </children>
 </AnchorPane>

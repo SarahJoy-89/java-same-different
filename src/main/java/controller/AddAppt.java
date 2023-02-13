@@ -1,13 +1,19 @@
 package controller;
 
+import Database.Query;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class AddAppt {
@@ -19,7 +25,7 @@ public class AddAppt {
         private TextField appt_id;
 
         @FXML
-        private TextField contact_id;
+        private ComboBox<String> contacts;
 
         @FXML
         private TextField customer_id;
@@ -31,10 +37,10 @@ public class AddAppt {
         private DatePicker end_date;
 
         @FXML
-        private Spinner<?> endtimehour;
+        private ComboBox<String> endMinute;
 
         @FXML
-        private Spinner<?> endtimemin;
+        private ComboBox<String> endHour;
 
         @FXML
         private TextField loc;
@@ -46,10 +52,10 @@ public class AddAppt {
         private DatePicker startdate;
 
         @FXML
-        private Spinner<?> starttimehour;
+        private ComboBox<String> startHour;
 
         @FXML
-        private Spinner<?> starttimemin;
+        private ComboBox<String> startMinute;
 
         @FXML
         private TextField title;
@@ -59,6 +65,9 @@ public class AddAppt {
 
         @FXML
         private TextField user_id;
+        Stage stage;
+        ObservableList<String> hours = FXCollections.observableArrayList();
+        ObservableList<String> minutes = FXCollections.observableArrayList();
 
         private int u_id;
         private ResourceBundle resourceBundle;
@@ -83,10 +92,6 @@ public class AddAppt {
 
         }
 
-        @FXML
-        void enterlocation(ActionEvent event) {
-
-        }
 
         @FXML
         void enterstartdate(ActionEvent event) {
@@ -104,8 +109,22 @@ public class AddAppt {
         }
 
         @FXML
-        void onActionCancel(ActionEvent event) {
+        void enterlocation(ActionEvent event) {
 
+        }
+
+        @FXML
+        void onActionCancel(ActionEvent event) throws IOException {
+                stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation((getClass().getResource("/com/example/javaproject1/MainTable.fxml")));
+                Parent scene = loader.load();
+
+                stage.setScene(new Scene(scene));
+                stage.show();
+
+                MainTable controller = loader.getController();
+                controller.init(u_id, resourceBundle);
         }
 
         @FXML
@@ -121,6 +140,19 @@ public class AddAppt {
         public void init(int id, ResourceBundle rb) {
                 u_id = id;
                 resourceBundle = rb;
+
+                hours.setAll("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11",
+                        "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23");
+                minutes.addAll("00", "15", "30", "45");
+
+                startHour.setItems(hours);
+                startMinute.setItems(minutes);
+
+                endHour.setItems(hours);
+                endMinute.setItems(minutes);
+
+                contacts.setItems(Query.getContacts());
+
 
         }
 
