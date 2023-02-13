@@ -5,6 +5,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.sql.Date;
 
@@ -185,8 +186,8 @@ public class Appointment {
 
     private ZonedDateTime convertYourLocaltoUTC(LocalDateTime yourLocal) {
         // first get a Zoned Date Time in the local timezone
-        ZonedDateTime zdtLocal = yourLocal.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
-        return zdtLocal.withZoneSameInstant(ZoneId.of("UTC"));
+        ZonedDateTime zdtLocal = ZonedDateTime.of(yourLocal, ZoneId.systemDefault());
+        return zdtLocal.withZoneSameInstant(ZoneOffset.UTC);
     }
 
 

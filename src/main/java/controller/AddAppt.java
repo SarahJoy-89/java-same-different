@@ -11,8 +11,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import model.Appointment;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
@@ -128,7 +131,49 @@ public class AddAppt {
         }
 
         @FXML
-        void onActionSave(ActionEvent event) {
+        void onActionSave(ActionEvent event) throws IOException {
+                Appointment appointment = new Appointment();
+
+                if (startdate.getValue() == null) {
+                        // print some alerts
+                } else {
+                        LocalDate toBeStart = startdate.getValue();
+                        LocalDate toBeEnd = end_date.getValue();
+                        String start_hour = startHour.getValue();
+                        String end_hour = endHour.getValue();
+                        String start_minute = startMinute.getValue();
+                        String end_minute = endMinute.getValue();
+                        LocalDateTime startingTime = LocalDateTime.of(toBeStart.getYear(), toBeStart.getMonthValue(), toBeStart.getDayOfMonth(), Integer.parseInt(start_hour), Integer.parseInt(start_minute));
+                        LocalDateTime endingTime = LocalDateTime.of(toBeEnd.getYear(), toBeEnd.getMonthValue(), toBeEnd.getDayOfMonth(), Integer.parseInt(end_hour), Integer.parseInt(end_minute));
+                        // Set the times
+                        appointment.setStart(startingTime);
+                        appointment.setEnd(endingTime);
+
+                        appointment.setTitle(title.getText());
+                        appointment.setDescription(description.getText());
+                        appointment.setLocation(loc.getText());
+                        appointment.setType(type.getText());
+
+                        appointment.setContact(contacts.getValue());
+                        appointment.setCustomer(Integer.parseInt(customer_id.getText()));
+                        appointment.setUser(Integer.parseInt(user_id.getText()));
+
+                        // update the database with Appointment object
+                        Query.addAppointment(appointment);
+
+                        // then go back to main menu
+
+                        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation((getClass().getResource("/com/example/javaproject1/MainTable.fxml")));
+                        Parent scene = loader.load();
+
+                        stage.setScene(new Scene(scene));
+                        stage.show();
+
+                        MainTable controller = loader.getController();
+                        controller.init(u_id, resourceBundle);
+                }
 
         }
 

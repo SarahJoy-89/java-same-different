@@ -182,10 +182,11 @@ public class Query {
     }
 
     public static void addAppointment(Appointment appointment) {
-        query = "INSERT into appointments (Title, Description, Type, Start, End, Customer_ID, User_ID, Contact_ID) " +
-                "VALUES (\"" + appointment.getTitle() + "\", \"" + appointment.getDescription() + "\", \"" + appointment.getType() + "\", \"" +
+        query = "INSERT into appointments (Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) " +
+                "VALUES (\"" + appointment.getTitle() + "\", \"" + appointment.getDescription() + "\", \"" + appointment.getLocation() + "\", \"" + appointment.getType() + "\", \"" +
                 appointment.getStartDB() + "\", \"" + appointment.getEndDB() + "\", " + appointment.getCustomer() + ", " + appointment.getUser() +
                 ", (SELECT Contact_ID from contacts WHERE contacts.Contact_Name=\"" + appointment.getContact() + "\") )";
+
 
         try {
             statement = conn.createStatement();
