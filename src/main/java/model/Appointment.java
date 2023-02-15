@@ -1,13 +1,12 @@
 package model;
 
-import javax.security.auth.login.FailedLoginException;
-import java.sql.Time;
+import Database.Query;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.sql.Date;
 
 public class Appointment {
     private int appointment_ID;
@@ -162,13 +161,20 @@ public class Appointment {
     public void setStart(LocalDateTime ldt) {
         startLocal = ldt;
         start = convertYourLocaltoUTC(startLocal);
-        startDB = Timestamp.from(start.toInstant());
+        startDB = Timestamp.valueOf(start.toLocalDateTime());
+    }
+
+
+    public void setStartDB(Timestamp ts) {
+        startDB =  ts;
+        start = convertTStoZDT(startDB);
+        startLocal = convertZDTtoLocal(start);
     }
 
     public void setEnd(LocalDateTime ldt) {
         endLocal = ldt;
         end = convertYourLocaltoUTC(endLocal);
-        endDB = Timestamp.from(end.toInstant());
+        endDB = Timestamp.valueOf(end.toLocalDateTime());
     }
 
     /**
@@ -206,6 +212,10 @@ public class Appointment {
             return false;
         }
         return true;
+    }
+
+    public boolean hasConflict() {
+        return Query.checkForMeetings(startDB, endDB);
     }
 
 }

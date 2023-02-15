@@ -5,9 +5,9 @@ import javafx.collections.ObservableList;
 import model.Appointment;
 import model.Customer;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 import static Database.DBConnection.conn;
@@ -108,6 +108,35 @@ public class Query {
         return false;
     }
 
+    public static Appointment appointmentSoon() {
+        // Get the time right now, but in UTC
+        LocalDateTime rightNowUTC = ZonedDateTime.now().withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime();
+        LocalDateTime inFifteenMinutes = rightNowUTC.plusMinutes(15);
+
+        Timestamp loginTime = Timestamp.valueOf(rightNowUTC);
+        Timestamp thoon = Timestamp.valueOf(inFifteenMinutes);
+
+        query = "SELECT Appointment_ID, Start from appointments WHERE Start BETWEEN \"" + loginTime + "\" AND \"" + thoon + "\"";
+        Appointment appointment = new Appointment();
+
+        try {
+            statement = conn.createStatement();
+            rs = statement.executeQuery(query);
+            // check to see if you get a result!
+            if (rs.next()) {
+                appointment.setAppointment_ID(rs.getInt(1));
+                appointment.setStartDB(rs.getTimestamp(1));
+                return appointment;
+            } else
+                return null;
+
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        return appointment;
+
+    }
+
     public static void deleteCustomer(int customerID) {
         query = "DELETE from CUSTOMERS where Customer_ID=" + customerID;
 
@@ -115,26 +144,13 @@ public class Query {
             statement = conn.createStatement();
             // nothing to return so not gathering a return value
             // just execute and delete!
-            statement.executeQuery(query);
+            statement.executeUpdate(query);
 
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
     }
 
-    public static void addCustomer(String custName, String address, String postCode, String phNumber, String fld) {
-
-        int key = 0;
-        query = "INSERT into Customers (" + custName + ", " + address + ", " + phNumber + ", " + fld + ")";
-        try {
-            statement = conn.createStatement();
-            rs = statement.executeQuery(query);
-            // key = rs.ge
-
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        }
-    }
 
     public static void updateCustomer(Customer customer) {
         query = "UPDATE customers \n" +
@@ -378,5 +394,24 @@ public class Query {
             sqle.printStackTrace();
         }
         return allContacts;
+    }
+
+    public static boolean checkForMeetings(Timestamp startTime, Timestamp endTime) {
+        query = "SELECT * from appointments WHERE Start BETWEEN \"" + startTime + "\" AND \"" + endTime + "\"";
+        String query2 = "SELECT * from appointments WHERE End BETWEEN \"" + startTime + "\" AND \"" + endTime + "\"";
+        String query3 = "SELECT * from appointments WHERE Start=" + startTime + "\"";
+
+        try {
+            statement = conn.createStatement();
+            rs = statement.executeQuery(query);
+            ResultSet rs2 = statement.executeQuery(query2);
+            ResultSet rs3 = statement.executeQuery(query3);
+
+            return (rs.next() || rs2.next() || rs3.next());
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+
+        return true;
     }
 }

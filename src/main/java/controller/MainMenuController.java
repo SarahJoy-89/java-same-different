@@ -102,6 +102,8 @@ public class MainMenuController implements Initializable {
             } catch (IOException ioe) {
                 System.err.println("Error writing to log file");
             }
+
+            System.out.println(Query.appointmentSoon());
             // Now go to the next frame
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             FXMLLoader loader = new FXMLLoader();
