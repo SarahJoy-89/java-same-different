@@ -264,6 +264,16 @@ public class Query {
         }
     }
 
+    public static void deleteSingleAppointment(int appointmentID) {
+        query = "DELETE from appointments WHERE Appointment_ID=" + appointmentID;
+        try {
+            statement = conn.createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+    }
+
     /**
      * Returns a String for the country name fetched from Countries table
      * @param countryID foreign key

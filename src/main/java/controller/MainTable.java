@@ -126,13 +126,32 @@ public class MainTable  {
 
     @FXML
     void onActionDelAppt(ActionEvent event) {
+        Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
+
+        if (selectedAppointment == null) {
+            // display an alert
+            System.out.println("Empty choice");
+        } else {
+            Query.deleteSingleAppointment(selectedAppointment.getAppointment_ID());
+        }
+
+        init(id, resourceBundle);
 
     }
 
     @FXML
     void onActionDelCust(ActionEvent event) {
+        Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
 
+        if (selectedCustomer == null) {
+            // display an alert
+            System.out.println("Empty customer choice");
+        } else {
+            Query.deleteAppointments(selectedCustomer.getCustomer_ID());
+            Query.deleteCustomer(selectedCustomer.getCustomer_ID());
+        }
 
+        init(id, resourceBundle);
     }
 
     @FXML
