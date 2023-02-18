@@ -90,7 +90,7 @@ public class MainMenuController implements Initializable {
 
         // Do some DB stuff to authenticate
         int id = Query.getUserID(uname);
-        // System.out.println("User ID: " + id + ", Password:" + pword +", Username: " + uname);
+
 
         if (Query.checkPassword(id, pword)) {
             // Create log entry for positive log in
@@ -118,6 +118,7 @@ public class MainMenuController implements Initializable {
 
         } else {
             //write 'negative' logging line if no match
+            displayAlert(1);
             String logLine = "User " + uname + " gave invalid log in at " + formattedDate + "\n";
             try (FileWriter logFileWriter = new FileWriter(logFile, true)) {
                 logFileWriter.append(logLine);
@@ -147,7 +148,7 @@ public class MainMenuController implements Initializable {
         // Set label timezone to user timezone
         timezone.setText(s);
 
-        user_name.setText(rb.getString("user_name"));
+        user_name.setText(resourceBundle.getString("user_name"));
         pass_word.setText(rb.getString("password"));
         time_zone.setText(rb.getString("timezone"));
 
@@ -161,8 +162,8 @@ public class MainMenuController implements Initializable {
         switch (alertType) {
 
             case 1:
-                alertError.setTitle("Error");
-                alertError.setHeaderText("Username or Password incorrect. Please try again");
+                alertError.setTitle(resourceBundle.getString("Error"));
+                alertError.setHeaderText(resourceBundle.getString("login_failure"));
                 alertError.showAndWait();
                 break;
 
