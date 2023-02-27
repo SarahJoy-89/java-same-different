@@ -57,6 +57,11 @@ public class ModifyCustomer {
     private int user_id;
     private ResourceBundle resourceBundle;
 
+    /**
+     * Returns to main table without saving any new customer data
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionCancel(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -92,6 +97,13 @@ public class ModifyCustomer {
 
     }
 
+    /**
+     * Creates a new Customer object and sets all data members based on
+     *  information in the form. Calls updateCustomer() method to updated
+     *  data for associated customer in the database
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionSave(ActionEvent event) throws IOException {
         // Initialize new Customer object to throw into DB
@@ -119,12 +131,24 @@ public class ModifyCustomer {
 
     }
 
+    /**
+     * Updates the contents of the division combobox based on
+     * the country that is selected
+     * @param event
+     */
     @FXML
     void onActionChangeCountry(ActionEvent event) {
         division.getItems().clear();
         updateDivisionList(countryBox.getValue().toString());
     }
 
+    /**
+     * Takes a customer object passed in from main table and initializes the
+     * modifycustomer form
+     * @param customer
+     * @param id
+     * @param rb
+     */
     public void initData(Customer customer, int id, ResourceBundle rb) {
 
         user_id = id;
@@ -158,6 +182,11 @@ public class ModifyCustomer {
 
     }
 
+    /**
+     * updates contents of divisionList combobox based
+     * on which country is selected in countries combobox
+     * @param countryName
+     */
     private void updateDivisionList(String countryName) {
         ResultSet rs = Query.getFLD(countryName);
 

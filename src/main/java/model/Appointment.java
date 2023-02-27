@@ -158,6 +158,11 @@ public class Appointment {
         this.customer = customer;
     }
 
+    /**
+     * Sets the start times in Appointment object
+     * to local date time, UTC time, and to SQL datetime in UTC
+     * @param ldt LocalDateTime to convert and set
+     */
     public void setStart(LocalDateTime ldt) {
         startLocal = ldt;
         start = convertYourLocaltoUTC(startLocal);

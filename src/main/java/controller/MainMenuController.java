@@ -75,6 +75,12 @@ public class MainMenuController implements Initializable {
         username.clear();
     }
 
+    /**
+     * Validates username and password for log in to application. Display
+     * language and time varies based on system locale
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionLogIn(ActionEvent event) throws IOException {
         String uname = username.getText();
@@ -143,7 +149,7 @@ public class MainMenuController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         ZoneId z = ZoneId.systemDefault();
         String s = z.getId();
-        resourceBundle = rb;
+        resourceBundle = ResourceBundle.getBundle(rb.getBaseBundleName());
 
         // Set label timezone to user timezone
         timezone.setText(s);

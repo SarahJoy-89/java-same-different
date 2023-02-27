@@ -137,6 +137,12 @@ public class EditAppt {
 
     }
 
+    /**
+     * returns to MainTable without saving or altering data on
+     * the appointment that was passed in.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionCancel(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -151,6 +157,13 @@ public class EditAppt {
         controller.init(u_id, resourceBundle);
     }
 
+    /**
+     * Registers a save event. Takes all data from fields in form and creates an
+     * Appoinment object with the data. Calls updateAppoinment method of Query
+     * to update in database.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionSave(ActionEvent event) throws IOException{
         // Initialize new empty object to shove data items
@@ -207,6 +220,13 @@ public class EditAppt {
 
     }
 
+    /**
+     * Initializes data with information from Appoinmtent object passed in from
+     * previous form. Also initializes time ComboBoxes and contacts combobox
+     * @param appointment Passed in from MainTable
+     * @param id user ID from login
+     * @param rb
+     */
     public void initData(Appointment appointment, int id, ResourceBundle rb) {
 
         u_id = id;
