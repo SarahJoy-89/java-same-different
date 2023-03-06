@@ -39,7 +39,7 @@ public class MainMenuController implements Initializable {
     static Connection conn = DBConnection.getConnection();
     private Statement stmt;
 
-    private ResourceBundle resourceBundle;
+    private ResourceBundle resourceBundle = ResourceBundle.getBundle("language_files/rebu");
 
 
 
@@ -68,7 +68,10 @@ public class MainMenuController implements Initializable {
     private TextField username;
 
 
-
+    /**
+     * Clears username and password fields on click
+     * @param event
+     */
     @FXML
     void clearfields(ActionEvent event) {
         password.clear();
@@ -78,7 +81,7 @@ public class MainMenuController implements Initializable {
     /**
      * Validates username and password for log in to application. Display
      * language and time varies based on system locale
-     * @param event
+     * @param event login
      * @throws IOException
      */
     @FXML
@@ -149,7 +152,7 @@ public class MainMenuController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         ZoneId z = ZoneId.systemDefault();
         String s = z.getId();
-        resourceBundle = ResourceBundle.getBundle(rb.getBaseBundleName());
+        // resourceBundle = ResourceBundle.getBundle(rb.getBaseBundleName());
 
         // Set label timezone to user timezone
         timezone.setText(s);
@@ -168,7 +171,7 @@ public class MainMenuController implements Initializable {
         switch (alertType) {
 
             case 1:
-                alertError.setTitle(resourceBundle.getString("Error"));
+                alertError.setTitle(resourceBundle.getString("error"));
                 alertError.setHeaderText(resourceBundle.getString("login_failure"));
                 alertError.showAndWait();
                 break;

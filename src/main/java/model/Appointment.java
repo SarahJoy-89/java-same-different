@@ -63,6 +63,11 @@ public class Appointment {
         endDB = e;
     }
 
+    /**
+     * Default constructor
+     * Creates an object with most data members
+     * initialized to 0 or null string
+     */
     public Appointment() {
         appointment_ID = 0;
         title = "";
@@ -169,13 +174,24 @@ public class Appointment {
         startDB = Timestamp.valueOf(start.toLocalDateTime());
     }
 
-
+    /**
+     * Sets the startDB time, based on a SQL datetime value.
+     * Converts that time to ZonedDateTime and to local time
+     * to set those corresponding data members
+     * @param ts SQL datetime value
+     */
     public void setStartDB(Timestamp ts) {
         startDB =  ts;
         start = convertTStoZDT(startDB);
         startLocal = convertZDTtoLocal(start);
     }
 
+    /**
+     * Sets end time based on local time. Converts that time to UTC.
+     * From UTC it's able to set the zoned time member and the
+     * SQL datetime for writing the object to the database
+     * @param ldt Local end time
+     */
     public void setEnd(LocalDateTime ldt) {
         endLocal = ldt;
         end = convertYourLocaltoUTC(endLocal);
@@ -202,7 +218,13 @@ public class Appointment {
     }
 
 
-
+    /**
+     * Based on created object,does a quick logical check to see
+     * if appointment start time is within office hours based on
+     * EST. Also checks if appointment end time is set after
+     * close of business hours.
+     * @return true if appointment time falls within office hours
+     */
     public boolean isDuringOfficeHours() {
 
         int easternStart = start.withZoneSameInstant(ZoneId.of("EST")).getHour();
@@ -219,6 +241,11 @@ public class Appointment {
         return true;
     }
 
+    /**
+     * Runs a comparison in the database to see if the appointment
+     * has any conflicts with existing appointments.
+     * @return true if there there is a conflict
+     */
     public boolean hasConflict() {
         return Query.checkForMeetings(startDB, endDB);
     }

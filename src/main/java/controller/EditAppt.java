@@ -70,6 +70,7 @@ public class EditAppt {
     @FXML
     private TextField user_id;
 
+    private Alert alert = new Alert(Alert.AlertType.ERROR, "Please complete all fields");
     Stage stage;
     ObservableList<String> hours = FXCollections.observableArrayList();
     ObservableList<String> minutes = FXCollections.observableArrayList();
@@ -170,9 +171,8 @@ public class EditAppt {
         Appointment appointment = new Appointment();
 
         // Make datebox and combo box data into Date-type objects
-        if (startdate.getValue() == null) {
-            // print some alerts
-        } else {
+        if (allFieldsGood()) {
+
             LocalDate toBeStart = startdate.getValue();
             LocalDate toBeEnd = end_date.getValue();
             String start_hour = startHour.getValue();
@@ -195,21 +195,28 @@ public class EditAppt {
             appointment.setUser(Integer.parseInt(user_id.getText()));
             appointment.setCustomer(Integer.parseInt(customer_id.getText()));
 
-            // update database
-            Query.updateAppointment(appointment);
+            // check for conflicts
+            if (appointment.hasConflict()) {
+                Alert conflictAlert = new Alert (Alert.AlertType.ERROR, "Conflict");
+            } else {
+                // update database
+                Query.updateAppointment(appointment);
 
-            // then go back to main menu
+                // then go back to main menu
 
-            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation((getClass().getResource("/com/example/javaproject1/MainTable.fxml")));
-            Parent scene = loader.load();
+                stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation((getClass().getResource("/com/example/javaproject1/MainTable.fxml")));
+                Parent scene = loader.load();
 
-            stage.setScene(new Scene(scene));
-            stage.show();
+                stage.setScene(new Scene(scene));
+                stage.show();
 
-            MainTable controller = loader.getController();
-            controller.init(u_id, resourceBundle);
+                MainTable controller = loader.getController();
+                controller.init(u_id, resourceBundle);
+            }
+        } else {
+            displayAlert();
         }
 
 
@@ -264,8 +271,43 @@ public class EditAppt {
         startMinute.setValue(appointment.getStartLocal().format(minuteFormat));
         endHour.setValue(appointment.getEndLocal().format(hourFormat));
         endMinute.setValue(appointment.getEndLocal().format(minuteFormat));
+    }
 
+    private boolean allFieldsGood() {
+        if (contacts.getValue() == "") {
+            return false;
+        }
+        if (title.getText() == "") {
+            return false;
+        }
+        if (locat.getText() == "") {
+            return false;
+        }
+        if (description.getText() == "") {
+            return false;
+        }
+        if (type.getText() == "") {
+            return false;
+        }
+        if (customer_id.getText() == "") {
+            return false;
+        }
 
+        if (user_id.getText() == "") {
+            return false;
+        }
+        if (startdate.getValue() == null) {
+            return false;
+        }
+        return true;
+    }
+
+    private void displayAlert() {
+        Alert alertError = new Alert(Alert.AlertType.ERROR);
+
+        alertError.setTitle("Error");
+        alertError.setHeaderText("Please make sure all fields are filled");
+        alertError.showAndWait();
 
     }
 

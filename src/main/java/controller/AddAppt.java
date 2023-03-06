@@ -116,6 +116,11 @@ public class AddAppt {
 
         }
 
+        /**
+         * Exits back to Main Table without saving to database.
+         * @param event
+         * @throws IOException
+         */
         @FXML
         void onActionCancel(ActionEvent event) throws IOException {
                 stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -130,13 +135,18 @@ public class AddAppt {
                 controller.init(u_id, resourceBundle);
         }
 
+        /**
+         * If all fields are filled, saves data and writes a new appointment to the
+         * appointments table of the database.
+         * @param event
+         * @throws IOException
+         */
         @FXML
         void onActionSave(ActionEvent event) throws IOException {
                 Appointment appointment = new Appointment();
 
-                if (startdate.getValue() == null) {
-                        // print some alerts
-                } else {
+                if (allFieldsGood()) {
+
                         LocalDate toBeStart = startdate.getValue();
                         LocalDate toBeEnd = end_date.getValue();
                         String start_hour = startHour.getValue();
@@ -173,6 +183,8 @@ public class AddAppt {
 
                         MainTable controller = loader.getController();
                         controller.init(u_id, resourceBundle);
+                } else {
+                        displayAlert();
                 }
 
         }
@@ -182,6 +194,12 @@ public class AddAppt {
 
         }
 
+        /**
+         * Initializes the UI for the Add Appointment view.
+         *
+         * @param id user ID
+         * @param rb Resource bundle
+         */
         public void init(int id, ResourceBundle rb) {
                 u_id = id;
                 resourceBundle = rb;
@@ -198,6 +216,52 @@ public class AddAppt {
 
                 contacts.setItems(Query.getContacts());
 
+
+        }
+
+        private boolean allFieldsGood() {
+                if (customer_id.getText() == "") {
+                        return false;
+                }
+                if (title.getText() == "") {
+                        return false;
+                }
+
+                if (description.getText() == "") {
+                        return false;
+                }
+                if (type.getText() == "") {
+                        return false;
+                }
+
+                if (loc.getText() == "") {
+                        return false;
+                }
+
+                if (user_id.getText() == "") {
+                        return false;
+                }
+
+                if (contacts.getValue() == null) {
+                        return false;
+                }
+
+                if (startdate.getValue() == null) {
+                        return false;
+                }
+
+                if (end_date.getValue() == null) {
+                        return false;
+                }
+                return true;
+        }
+
+        private void displayAlert() {
+                Alert alertError = new Alert(Alert.AlertType.ERROR);
+
+                alertError.setTitle("Error");
+                alertError.setHeaderText("Please make sure all fields are filled");
+                alertError.showAndWait();
 
         }
 

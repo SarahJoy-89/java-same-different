@@ -6,10 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Customer;
 
@@ -70,6 +67,12 @@ public class AddCustomer {
     void onActionAddPostalCode(ActionEvent event) {
     }
 
+    /**
+     * On button press, returns to MainTable without saving to database.
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionCancel(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -85,6 +88,11 @@ public class AddCustomer {
 
     }
 
+    /**
+     * When a new country is selected, method clears out the values in the division box combobox
+     * and initializes with the first level divisions from the database.
+     * @param event
+     */
     @FXML
     void onActionChangeCountry(ActionEvent event) {
         String countryName = countryBox.getValue().toString();
@@ -101,36 +109,50 @@ public class AddCustomer {
 
     }
 
-
+    /**
+     * Saves all present customer data to create new customer in database.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionSave(ActionEvent event) throws IOException {
-        // Initialized new data object
-        Customer tempCustomer = new Customer();
-        tempCustomer.setCustomerName(customerName.getText());
-        tempCustomer.setAddress(address.getText());
-        tempCustomer.setPostalCode(postalCode.getText());
-        tempCustomer.setPhoneNumber(phoneNumber.getText());
-        tempCustomer.setFirstLevelDivision(divisionBox.getValue().toString());
 
-        // logical check to make sure you have
-        // all necessary data members
+        if (allFieldsGood()) {
+            // Initialized new data object
+            Customer tempCustomer = new Customer();
+            tempCustomer.setCustomerName(customerName.getText());
+            tempCustomer.setAddress(address.getText());
+            tempCustomer.setPostalCode(postalCode.getText());
+            tempCustomer.setPhoneNumber(phoneNumber.getText());
+            tempCustomer.setFirstLevelDivision(divisionBox.getValue().toString());
+
+            // logical check to make sure you have
+            // all necessary data members
 
 
-        Query.addCustomer(tempCustomer);
+            Query.addCustomer(tempCustomer);
 
-        // then go back to MainMenu
-        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation((getClass().getResource("/com/example/javaproject1/MainTable.fxml")));
-        Parent scene = loader.load();
+            // then go back to MainMenu
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation((getClass().getResource("/com/example/javaproject1/MainTable.fxml")));
+            Parent scene = loader.load();
 
-        stage.setScene(new Scene(scene));
-        stage.show();
+            stage.setScene(new Scene(scene));
+            stage.show();
 
-        MainTable controller = loader.getController();
-        controller.init(user_id, resourceBundle);
+            MainTable controller = loader.getController();
+            controller.init(user_id, resourceBundle);
+        } else {
+            displayAlert();
+        }
     }
 
+    /**
+     * Initializes Country combobox, displays form for Customer intake.
+     * @param id
+     * @param rb
+     */
     public void initData(int id, ResourceBundle rb) {
         user_id = id;
         resourceBundle = rb;
@@ -144,6 +166,34 @@ public class AddCustomer {
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
+
+    }
+
+    private boolean allFieldsGood() {
+        if (customerName.getText() == "") {
+            return false;
+        }
+        if (address.getText() == "") {
+            return false;
+        }
+        if (postalCode.getText() == "") {
+            return false;
+        }
+        if (phoneNumber.getText() == "") {
+            return false;
+        }
+        if (divisionBox.getValue() == null) {
+            return false;
+        }
+        return true;
+    }
+
+    private void displayAlert() {
+        Alert alertError = new Alert(Alert.AlertType.ERROR);
+
+        alertError.setTitle("Error");
+        alertError.setHeaderText("Please make sure all fields are filled");
+        alertError.showAndWait();
 
     }
 
