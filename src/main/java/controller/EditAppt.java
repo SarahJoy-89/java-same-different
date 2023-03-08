@@ -198,7 +198,7 @@ public class EditAppt {
             // check for conflicts
             if (appointment.hasConflict()) {
                 Alert conflictAlert = new Alert (Alert.AlertType.ERROR, "Conflict");
-            } else {
+            } else if (appointment.isDuringOfficeHours()) {
                 // update database
                 Query.updateAppointment(appointment);
 
@@ -214,6 +214,8 @@ public class EditAppt {
 
                 MainTable controller = loader.getController();
                 controller.init(u_id, resourceBundle);
+            } else {
+                Alert afterHoursAlert = new Alert (Alert.AlertType.ERROR, "Outside business hours");
             }
         } else {
             displayAlert();

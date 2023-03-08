@@ -168,21 +168,29 @@ public class AddAppt {
                         appointment.setCustomer(Integer.parseInt(customer_id.getText()));
                         appointment.setUser(Integer.parseInt(user_id.getText()));
 
-                        // update the database with Appointment object
-                        Query.addAppointment(appointment);
+                        if (appointment.hasConflict()) {
+                                Alert conflictAlert = new Alert (Alert.AlertType.ERROR, "Conflict");
+                        } else
+                                if (appointment.isDuringOfficeHours()) {
+                                        // update the database with Appointment object
+                                        Query.addAppointment(appointment);
 
-                        // then go back to main menu
+                                        // then go back to main menu
 
-                        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-                        FXMLLoader loader = new FXMLLoader();
-                        loader.setLocation((getClass().getResource("/com/example/javaproject1/MainTable.fxml")));
-                        Parent scene = loader.load();
+                                        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                                        FXMLLoader loader = new FXMLLoader();
+                                        loader.setLocation((getClass().getResource("/com/example/javaproject1/MainTable.fxml")));
+                                        Parent scene = loader.load();
 
-                        stage.setScene(new Scene(scene));
-                        stage.show();
+                                        stage.setScene(new Scene(scene));
+                                        stage.show();
 
-                        MainTable controller = loader.getController();
-                        controller.init(u_id, resourceBundle);
+                                        MainTable controller = loader.getController();
+                                        controller.init(u_id, resourceBundle);
+                                }
+                                else {
+                                        Alert afterHoursAlert = new Alert (Alert.AlertType.ERROR, "Outside business hours");
+                                }
                 } else {
                         displayAlert();
                 }
