@@ -394,15 +394,30 @@ public class Query {
     public static boolean checkForMeetings(Timestamp startTime, Timestamp endTime) {
         query = "SELECT * from appointments WHERE Start BETWEEN \"" + startTime + "\" AND \"" + endTime + "\"";
         String query2 = "SELECT * from appointments WHERE End BETWEEN \"" + startTime + "\" AND \"" + endTime + "\"";
-        String query3 = "SELECT * from appointments WHERE Start=" + startTime + "\"";
+        String query3 = "SELECT * from appointments WHERE Start=\"" + startTime + "\"";
 
         try {
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
-            ResultSet rs2 = statement.executeQuery(query2);
-            ResultSet rs3 = statement.executeQuery(query3);
 
-            return (rs.next() || rs2.next() || rs3.next());
+            if (rs.next()) {
+                return true;
+            }
+            rs = statement.executeQuery(query2);
+
+            if (rs.next())
+            {
+                return true;
+            }
+
+            rs = statement.executeQuery(query3);
+
+            if (rs.next()) {
+                return true;
+            }
+
+            return false;
+
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }

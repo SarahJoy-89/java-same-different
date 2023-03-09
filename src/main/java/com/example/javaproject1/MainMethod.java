@@ -33,7 +33,7 @@ public class MainMethod extends Application {
         //open Connection to DB
         DBConnection.startConnection();
         // To test the French locale uncomment the following line
-        // Locale.setDefault(new Locale("fr", "FR"));
+        //Locale.setDefault(new Locale("fr", "FR"));
 
         launch();
 
