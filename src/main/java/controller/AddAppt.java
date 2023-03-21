@@ -132,7 +132,7 @@ public class AddAppt {
                 stage.show();
 
                 MainTable controller = loader.getController();
-                controller.init(u_id, resourceBundle);
+                controller.init();
         }
 
         /**
@@ -170,6 +170,7 @@ public class AddAppt {
 
                         if (appointment.hasConflict()) {
                                 Alert conflictAlert = new Alert (Alert.AlertType.ERROR, "Conflict");
+                                conflictAlert.showAndWait();
                         } else
                                 if (appointment.isDuringOfficeHours()) {
                                         // update the database with Appointment object
@@ -186,10 +187,11 @@ public class AddAppt {
                                         stage.show();
 
                                         MainTable controller = loader.getController();
-                                        controller.init(u_id, resourceBundle);
+                                        controller.init();
                                 }
                                 else {
                                         Alert afterHoursAlert = new Alert (Alert.AlertType.ERROR, "Outside business hours");
+                                        afterHoursAlert.showAndWait();
                                 }
                 } else {
                         displayAlert();
@@ -205,12 +207,8 @@ public class AddAppt {
         /**
          * Initializes the UI for the Add Appointment view.
          *
-         * @param id user ID
-         * @param rb Resource bundle
          */
-        public void init(int id, ResourceBundle rb) {
-                u_id = id;
-                resourceBundle = rb;
+        public void init() {
 
                 hours.setAll("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11",
                         "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23");

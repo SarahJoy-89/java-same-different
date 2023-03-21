@@ -73,7 +73,7 @@ public class ModifyCustomer {
         stage.show();
 
         MainTable controller = loader.getController();
-        controller.init(user_id, resourceBundle);
+        controller.init();
     }
 
     @FXML
@@ -127,7 +127,7 @@ public class ModifyCustomer {
         stage.show();
 
         MainTable controller = loader.getController();
-        controller.init(user_id, resourceBundle);
+        controller.init();
 
     }
 
@@ -146,30 +146,17 @@ public class ModifyCustomer {
      * Takes a customer object passed in from main table and initializes the
      * modifycustomer form
      * @param customer
-     * @param id
-     * @param rb
      */
-    public void initData(Customer customer, int id, ResourceBundle rb) {
+    public void initData(Customer customer) {
 
-        user_id = id;
-        resourceBundle = rb;
 
         custID.setText(String.valueOf(customer.getCustomer_ID()));
         editName.setText(customer.getCustomerName());
         editAddress.setText(customer.getAddress());
         phonenumber.setText(customer.getPhoneNumber());
         postalCode.setText(customer.getPostalCode());
+        countryBox.setItems(Query.getCountries());
 
-        ResultSet rs = Query.getCountries();
-
-        // populate Country list
-        try {
-            while (rs.next()) {
-                countryBox.getItems().add(rs.getString(1));
-            }
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        }
         // String countryName = customer.getCountry();
 
         countryBox.getSelectionModel().select(customer.getCountry());

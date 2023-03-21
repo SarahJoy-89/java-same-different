@@ -155,7 +155,7 @@ public class EditAppt {
         stage.show();
 
         MainTable controller = loader.getController();
-        controller.init(u_id, resourceBundle);
+        controller.init();
     }
 
     /**
@@ -195,9 +195,11 @@ public class EditAppt {
             appointment.setUser(Integer.parseInt(user_id.getText()));
             appointment.setCustomer(Integer.parseInt(customer_id.getText()));
 
+
             // check for conflicts
             if (appointment.hasConflict()) {
-                Alert conflictAlert = new Alert (Alert.AlertType.ERROR, "Conflict");
+                Alert conflictAlert = new Alert (Alert.AlertType.ERROR, "Conflicts with an existing appointment!");
+                conflictAlert.showAndWait();
             } else if (appointment.isDuringOfficeHours()) {
                 // update database
                 Query.updateAppointment(appointment);
@@ -213,9 +215,10 @@ public class EditAppt {
                 stage.show();
 
                 MainTable controller = loader.getController();
-                controller.init(u_id, resourceBundle);
+                controller.init();
             } else {
                 Alert afterHoursAlert = new Alert (Alert.AlertType.ERROR, "Outside business hours");
+                afterHoursAlert.showAndWait();
             }
         } else {
             displayAlert();
@@ -233,13 +236,8 @@ public class EditAppt {
      * Initializes data with information from Appoinmtent object passed in from
      * previous form. Also initializes time ComboBoxes and contacts combobox
      * @param appointment Passed in from MainTable
-     * @param id user ID from login
-     * @param rb
      */
-    public void initData(Appointment appointment, int id, ResourceBundle rb) {
-
-        u_id = id;
-        resourceBundle = rb;
+    public void initData(Appointment appointment) {
 
         hours.setAll("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11",
                 "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23");
@@ -253,7 +251,7 @@ public class EditAppt {
 
         contacts.setItems(Query.getContacts());
 
-        DateTimeFormatter hourFormat = DateTimeFormatter.ofPattern("KK");
+        DateTimeFormatter hourFormat = DateTimeFormatter.ofPattern("kk");
         DateTimeFormatter minuteFormat = DateTimeFormatter.ofPattern("mm");
 
 
@@ -262,7 +260,7 @@ public class EditAppt {
         locat.setText(appointment.getLocation());
         description.setText(appointment.getDescription());
         type.setText(appointment.getType());
-        customer_id.setText(String.valueOf(appointment.getAppointment_ID()));
+        customer_id.setText(String.valueOf(appointment.getCustomer()));
         contacts.setValue(appointment.getContact());
         user_id.setText(String.valueOf(appointment.getUser()));
         startdate.setValue(appointment.getStartLocal().toLocalDate());

@@ -2,6 +2,7 @@ package model;
 
 import Database.Query;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -79,88 +80,203 @@ public class Appointment {
 
     }
 
+    /**
+     * Constructor for use with Reports view. Accepts a smaller number of initial fields for display.
+     * @param id
+     * @param ti
+     * @param ty
+     * @param d
+     * @param s
+     * @param e
+     * @param cus
+     */
+    public Appointment(int id, String ti, String ty, String d, Timestamp s, Timestamp e, int cus) {
+        appointment_ID =id;
+        title = ti;
+        type = ty;
+        description = d;
+        start = convertTStoZDT(s);
+        end = convertTStoZDT(e);
+        customer = cus;
+
+        startLocal = convertZDTtoLocal(start);
+        endLocal = convertZDTtoLocal(end);
+
+        // I don't think it matters for this one
+        startDB = s;
+        endDB = e;
+    }
+
+    /**
+     * Returns the Appointment ID
+     * @return
+     */
     public int getAppointment_ID() {
         return appointment_ID;
     }
 
+    /**
+     * Returns String containing the Appointment's title
+     * @return
+     */
     public String getTitle(){
         return title;
     }
 
+    /**
+     * Returns a String containing the Appointment's description
+     * @return
+     */
     public String getDescription(){
         return description;
     }
 
+    /**
+     * Returns a String containing the Appointment's location
+     * @return
+     */
     public String getLocation(){
         return location;
     }
 
+    /**
+     * Returns a String containing Appointment's type
+     * @return
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * Returns ZonedDateTime corresponding to appointment's start time. This will be the same time as in the database
+     * @return
+     */
     public ZonedDateTime getStart(){
         return start;
     }
 
+    /**
+     * Returns ZonedDateTime corresponding to appointment's end time
+     * @return
+     */
     public ZonedDateTime getEnd(){
         return end;
     }
 
+    /**
+     * Return Customer ID of Appointment
+     * @return
+     */
     public int getCustomer(){
         return customer;
     }
 
+    /**
+     * Returns User ID of Appointment
+     * @return
+     */
     public int getUser() {
         return user;
     }
 
+    /**
+     * Return String for Contact of Appointment
+     * @return
+     */
     public String getContact() {
         return contact;
     }
 
+    /**
+     * Returns the LocalDateTime of the Appointment. This time will be adjusted to the time zone of the user running the application.
+     * @return
+     */
     public LocalDateTime getStartLocal() { return startLocal; }
 
+    /**
+     * Returns the LocalDateTime of the Appointment. This time will be adjusted to the time zone of the user running the applications.
+     * @return
+     */
     public LocalDateTime getEndLocal() {return endLocal; }
 
+    /**
+     * Returns Timestamp form of the start time for writing to Database
+     * @return
+     */
     public Timestamp getStartDB() {
         return startDB;
     }
 
+    /**
+     * Returns Timestamp form of the end time for writing to Database
+     * @return
+     */
     public Timestamp getEndDB() {
         return endDB;
     }
 
+    /**
+     * Sets the Appointment ID of the appointment
+     * @param id
+     */
     public void setAppointment_ID(int id) {
         appointment_ID = id;
     }
 
+    /**
+     * Sets the title of the Appointment
+     * @param t
+     */
     public void setTitle(String t) {
         title = t;
     }
 
+    /**
+     * Sets the description of the Appointment
+     * @param des
+     */
     public void setDescription(String des) {
         description = des;
     }
 
+    /**
+     * Set location of the Appointment
+     * @param loc
+     */
     public void setLocation(String loc) {
         location = loc;
     }
 
+    /**
+     * Set the type of the Appointment
+     * @param t
+     */
     public void setType(String t) {
         type = t;
     }
 
+    /**
+     * Set UserID of the Appointment
+     * @param u
+     */
     public void setUser(int u) {
         user = u;
     }
 
+    /**
+     * Set Contact of the Appointment
+     * @param c
+     */
     public void setContact(String c) {
         contact = c;
     }
 
-    public void setCustomer(int customer) {
-        this.customer = customer;
+    /**
+     * Sets the customer ID of the Appointment.
+     * @param cu
+     */
+    public void setCustomer(int cu) {
+        customer = cu;
     }
 
     /**
@@ -227,9 +343,10 @@ public class Appointment {
      */
     public boolean isDuringOfficeHours() {
 
-        int easternStart = start.withZoneSameInstant(ZoneId.of("EST")).getHour();
-        int easternEnd = end.withZoneSameInstant(ZoneId.of("EST")).getHour();
+        int easternStart = start.withZoneSameInstant(ZoneId.of("America/New_York")).getHour();
+        int easternEnd = end.withZoneSameInstant(ZoneId.of("America/New_York")).getHour();
 
+        System.out.println("Start: " + easternStart +", End: " + easternEnd);
         // if the appointment start time is before 8 AM EST or after 10 for some reason
         if (easternStart < 8 || easternStart > 22) {
             return false;
@@ -247,7 +364,8 @@ public class Appointment {
      * @return true if there there is a conflict
      */
     public boolean hasConflict() {
-        return Query.checkForMeetings(startDB, endDB);
+
+        return Query.checkForMeetings(appointment_ID, startDB, endDB);
     }
 
 }
