@@ -84,7 +84,7 @@ public class AddCustomer {
         stage.show();
 
         MainTable controller = loader.getController();
-        controller.init(user_id, resourceBundle);
+        controller.init();
 
     }
 
@@ -142,7 +142,7 @@ public class AddCustomer {
             stage.show();
 
             MainTable controller = loader.getController();
-            controller.init(user_id, resourceBundle);
+            controller.init();
         } else {
             displayAlert();
         }
@@ -150,22 +150,10 @@ public class AddCustomer {
 
     /**
      * Initializes Country combobox, displays form for Customer intake.
-     * @param id
-     * @param rb
      */
-    public void initData(int id, ResourceBundle rb) {
-        user_id = id;
-        resourceBundle = rb;
-        ResultSet rs = Query.getCountries();
+    public void initData() {
 
-        // populate Country list
-        try {
-            while (rs.next()) {
-                countryBox.getItems().add(rs.getString(1));
-            }
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        }
+        countryBox.setItems(Query.getCountries());
 
     }
 

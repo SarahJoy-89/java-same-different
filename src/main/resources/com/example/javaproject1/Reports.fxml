@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="Reports" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Reports">
+    <children>
+        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+            <children>
+                <TabPane layoutX="12.0" layoutY="16.0" prefHeight="335.0" prefWidth="611.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                        <Tab text="Count">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <GridPane layoutX="17.0" layoutY="28.0" prefHeight="250.0" prefWidth="543.0">
+                                            <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="177.0" minWidth="10.0" prefWidth="123.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.0" minWidth="10.0" prefWidth="170.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="311.0" minWidth="10.0" prefWidth="249.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                            <children>
+                                                <Label text="Select Type" />
+                                                <Label text="Select Month" GridPane.rowIndex="1" />
+                                                <ComboBox fx:id="typeBox" prefWidth="150.0" GridPane.columnIndex="1" />
+                                                <ComboBox fx:id="monthBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <Label text="Total Appointments" GridPane.rowIndex="3" />
+                                                <TextArea fx:id="totalCountArea" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Button fx:id="countButton" mnemonicParsing="false" onAction="#onActionGetCount" text="Get Count" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                            </children>
+                                        </GridPane>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                        <Tab text="Schedules">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <TableView fx:id="appointmentTable" layoutX="93.0" layoutY="52.0" prefHeight="252.0" prefWidth="611.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="52.0">
+                                            <columns>
+                                                <TableColumn fx:id="apptColumn" prefWidth="114.0" text="Appointment ID" />
+                                                <TableColumn fx:id="titleColumn" prefWidth="68.0" text="Title" />
+                                                <TableColumn fx:id="typeColumn" prefWidth="49.0" text="Type" />
+                                                <TableColumn fx:id="descriptionColumn" text="Description" />
+                                                <TableColumn fx:id="startColumn" prefWidth="95.0" text="Start Date/TIme" />
+                                                <TableColumn fx:id="endColumn" prefWidth="104.0" text="End Date/Time" />
+                                                <TableColumn fx:id="customerColumn" prefWidth="98.0" text="Customer ID" />
+                                            </columns>
+                                        </TableView>
+                                        <Label layoutX="21.0" layoutY="14.0" text="Contact:" />
+                                        <ComboBox fx:id="contactBox" layoutX="86.0" layoutY="10.0" onAction="#onActionChangeContact" prefWidth="150.0" />
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                        <Tab text="Customer">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="34.0" layoutY="22.0" text="Select Country" />
+                              <ComboBox fx:id="countryBox" layoutX="122.0" layoutY="18.0" onAction="#onActionChangeCountry" prefWidth="150.0" />
+                              <TableView fx:id="customerTable" layoutX="14.0" layoutY="62.0" prefHeight="240.0" prefWidth="596.0">
+                                <columns>
+                                  <TableColumn fx:id="idColumn" prefWidth="62.0" text="ID" />
+                                  <TableColumn fx:id="nameColumn" prefWidth="162.0" text="Name" />
+                                    <TableColumn fx:id="addColumn" minWidth="1.0" prefWidth="136.0" text="Address" />
+                                    <TableColumn fx:id="postColumn" prefWidth="113.0" text="Postal Code" />
+                                    <TableColumn fx:id="fldColumn" prefWidth="122.0" text="First Level Division" />
+                                </columns>
+                              </TableView>
+                           </children></AnchorPane>
+                            </content>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+                <Button fx:id="backButton" layoutX="29.0" layoutY="360.0" mnemonicParsing="false" onAction="#onActionGoBack" text="Go Back" />
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>

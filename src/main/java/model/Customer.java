@@ -14,7 +14,15 @@ public class Customer {
     private String firstLevelDivision;
     private String country = "";
 
-
+    /**
+     * Constructor taking on all values necessary to build a full Customer object
+     * @param ci Customer ID
+     * @param cn Customer Name
+     * @param ad Address
+     * @param pc Postal Code
+     * @param pn Phone Number
+     * @param di First Level Division
+     */
     public Customer(int ci, String cn, String ad, String pc, String pn, String di) {
         customerID = ci;
         customerName = cn;
@@ -25,6 +33,24 @@ public class Customer {
 
     }
 
+    /**
+     * Constructor taking values for use in report
+     * @param ci Customer ID
+     * @param cn Customer name
+     * @param ad Address
+     * @param pc Postal Code
+     * @param di First Level Division
+     */
+    public Customer(int ci, String cn, String ad, String pc, String di) {
+        customerID = ci;
+        customerName = cn;
+        address = ad;
+        postalCode = pc;
+        firstLevelDivision = di;
+    }
+    /**
+     * Default constructor. Initializes with empty data members.
+     */
     public Customer() {
         customerName = "";
         address = "";
@@ -33,10 +59,18 @@ public class Customer {
         firstLevelDivision = "";
     }
 
+    /**
+     * return value of Customer ID
+     * @return int Customer ID
+     */
     public int getCustomer_ID() {
         return customerID;
     }
 
+    /**
+     * Return string containing the address
+     * @return address
+     */
     public String getAddress() {
         return address;
     }

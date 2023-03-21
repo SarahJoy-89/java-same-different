@@ -27,6 +27,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import Database.DBConnection;
 import Database.Query;
+import model.Appointment;
+import com.example.javaproject1.LogHelper;
 
 
 public class MainMenuController implements Initializable {
@@ -38,6 +40,7 @@ public class MainMenuController implements Initializable {
 
     static Connection conn = DBConnection.getConnection();
     private Statement stmt;
+    private LogHelper logHelper;
 
     private ResourceBundle resourceBundle = ResourceBundle.getBundle("language_files/rebu");
 
@@ -89,7 +92,14 @@ public class MainMenuController implements Initializable {
         String uname = username.getText();
         String pword = password.getText();
 
-        // ResultSet rs;
+        LogHelper goodlog=(s1, s2)-> {
+            return "User " + s1 + " successfully logged in at " + s2 + "\n";
+        };
+
+        LogHelper badLog=(s1, s2)->{
+            return "User " + s1 + " gave invalid log in at " + s2 + "\n";
+        };
+
 
         // Get ready to write to the log!
         // Get the date and time in string format for the log entry
@@ -102,17 +112,24 @@ public class MainMenuController implements Initializable {
 
 
         if (Query.checkPassword(id, pword)) {
-            // Create log entry for positive log in
-            String logLine = "User " + uname + " successfully logged in at " + formattedDate + "\n";
 
             // write to log
             try (FileWriter logFileWriter = new FileWriter(logFile, true)) {
-                logFileWriter.append(logLine);
+                logFileWriter.append(goodlog.logThis(uname, formattedDate));
             } catch (IOException ioe) {
                 System.err.println("Error writing to log file");
             }
 
-            System.out.println(Query.appointmentSoon());
+            Appointment appointment = Query.appointmentSoon();
+            Alert loginAlert = new Alert(Alert.AlertType.INFORMATION);
+            if (appointment == null) {
+                loginAlert.setHeaderText("No appointments coming up!");
+                loginAlert.show();
+            } else {
+                loginAlert.setHeaderText("Appointment " + appointment.getAppointment_ID() + " at " + appointment.getStartLocal().format(formatDate));
+                loginAlert.show();
+            }
+
             // Now go to the next frame
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             FXMLLoader loader = new FXMLLoader();
@@ -123,14 +140,14 @@ public class MainMenuController implements Initializable {
             stage.show();
 
             MainTable controller = loader.getController();
-            controller.init(id, resourceBundle);
+            controller.init();
 
         } else {
             //write 'negative' logging line if no match
             displayAlert(1);
-            String logLine = "User " + uname + " gave invalid log in at " + formattedDate + "\n";
+
             try (FileWriter logFileWriter = new FileWriter(logFile, true)) {
-                logFileWriter.append(logLine);
+                logFileWriter.append(badLog.logThis(uname, formattedDate));
                 // also clear out the text fields
                 password.clear();
                 username.clear();
@@ -142,12 +159,20 @@ public class MainMenuController implements Initializable {
           }
         }
 
-
+    /**
+     * Clicking this button exits the program
+     * @param event
+     */
     @FXML
     void onActionExitProgram(ActionEvent event) {
         System.exit(0);
     }
 
+    /**
+     * Initialize method sets up main interfce
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ZoneId z = ZoneId.systemDefault();

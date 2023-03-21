@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Objects;
@@ -79,8 +80,8 @@ public class MainTable  {
     @FXML private TableColumn<Appointment, String> locCol;
     @FXML private TableColumn<Appointment, String> conCol;
     @FXML private TableColumn<Appointment, String> typCol;
-    @FXML private TableColumn<Appointment, ZonedDateTime> startCol;
-    @FXML private TableColumn<Appointment, ZonedDateTime> endCol;
+    @FXML private TableColumn<Appointment, LocalDateTime> startCol;
+    @FXML private TableColumn<Appointment, LocalDateTime> endCol;
     @FXML private TableColumn<Appointment, Integer> aptCustNameCol;
     @FXML private TableColumn<Appointment, Integer> userNameCol;
 
@@ -91,7 +92,7 @@ public class MainTable  {
     Stage stage;
     Parent scene;
     private int id;
-    private ResourceBundle resourceBundle;
+    private ResourceBundle resourceBundle =  ResourceBundle.getBundle("language_files/rebu");
 
 
     @FXML
@@ -105,7 +106,7 @@ public class MainTable  {
         stage.show();
 
         AddAppt controller = loader.getController();
-        controller.init(id, resourceBundle);
+        controller.init();
     }
 
     @FXML
@@ -120,7 +121,7 @@ public class MainTable  {
         stage.show();
 
         AddCustomer controller = loader.getController();
-        controller.initData(id, resourceBundle);
+        controller.initData();
 
     }
 
@@ -129,13 +130,13 @@ public class MainTable  {
         Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
 
         if (selectedAppointment == null) {
-            // display an alert
-            System.out.println("Empty choice");
+            Alert noSelection = new Alert(Alert.AlertType.ERROR, "Please select an appointment.");
+            noSelection.showAndWait();
         } else {
             Query.deleteSingleAppointment(selectedAppointment.getAppointment_ID());
         }
 
-        init(id, resourceBundle);
+        init();
 
     }
 
@@ -144,14 +145,18 @@ public class MainTable  {
         Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
 
         if (selectedCustomer == null) {
-            // display an alert
-            System.out.println("Empty customer choice");
+            Alert noSelection = new Alert(Alert.AlertType.ERROR, "Please select a customer.");
+            noSelection.showAndWait();
+
         } else {
             Query.deleteAppointments(selectedCustomer.getCustomer_ID());
             Query.deleteCustomer(selectedCustomer.getCustomer_ID());
         }
 
-        init(id, resourceBundle);
+        Alert deletedCustomerAlert = new Alert(Alert.AlertType.INFORMATION, "Record for " + selectedCustomer.getCustomerName() + "successfully deleted.");
+        deletedCustomerAlert.showAndWait();
+
+        init();
     }
 
     @FXML
@@ -171,16 +176,22 @@ public class MainTable  {
 
         Appointment appointment = appointmentTable.getSelectionModel().getSelectedItem();
 
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation((getClass().getResource("/com/example/javaproject1/EditAppt.fxml")));
-        Parent scene = loader.load();
+        if (appointment == null) {
+            Alert noSelection = new Alert(Alert.AlertType.ERROR, "Please select an appointment.");
+            noSelection.showAndWait();
+        } else {
 
-        stage.setScene(new Scene(scene));
-        stage.show();
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation((getClass().getResource("/com/example/javaproject1/EditAppt.fxml")));
+            Parent scene = loader.load();
 
-        EditAppt controller = loader.getController();
-        controller.initData(appointment, id, resourceBundle);
+            stage.setScene(new Scene(scene));
+            stage.show();
+
+            EditAppt controller = loader.getController();
+            controller.initData(appointment);
+        }
 
 
     }
@@ -189,42 +200,94 @@ public class MainTable  {
     void onActionModCust(ActionEvent event) throws IOException {
         Customer customer = customerTable.getSelectionModel().getSelectedItem();
 
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation((getClass().getResource("/com/example/javaproject1/ModifyCustomer.fxml")));
-        Parent scene = loader.load();
+        if (customer == null) {
+            Alert noSelection = new Alert(Alert.AlertType.ERROR, "Please select a customer.");
+            noSelection.showAndWait();
+        } else {
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation((getClass().getResource("/com/example/javaproject1/ModifyCustomer.fxml")));
+            Parent scene = loader.load();
 
-        stage.setScene(new Scene(scene));
-        stage.show();
+            stage.setScene(new Scene(scene));
+            stage.show();
 
-        ModifyCustomer controller = loader.getController();
-        controller.initData(customer, id, resourceBundle);
+            ModifyCustomer controller = loader.getController();
+            controller.initData(customer);
+        }
     }
 
     @FXML
     void onActionViewAll(ActionEvent event) {
 
+        appointmentTable.setItems(Query.getAppointments());
+
+        aptIDCol.setCellValueFactory(new PropertyValueFactory<>("appointment_ID"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        locCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+        conCol.setCellValueFactory(new PropertyValueFactory<>("contact"));
+        typCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        startCol.setCellValueFactory(new PropertyValueFactory<>("startLocal"));
+        endCol.setCellValueFactory(new PropertyValueFactory<>("endLocal"));
+        aptCustNameCol.setCellValueFactory(new PropertyValueFactory<>("customer"));
+        userNameCol.setCellValueFactory(new PropertyValueFactory<>("user"));
+
     }
 
     @FXML
-    void onActionViewReports(ActionEvent event) {
+    void onActionViewReports(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation((getClass().getResource("/com/example/javaproject1/Reports.fxml")));
+        Parent scene = loader.load();
+
+        stage.setScene(new Scene(scene));
+        stage.show();
+
+        Reports controller = loader.getController();
+        controller.init();
 
     }
 
     @FXML
     void onActionViewWeek(ActionEvent event) {
+        appointmentTable.setItems(Query.getWeekAppointments());
+
+        aptIDCol.setCellValueFactory(new PropertyValueFactory<>("appointment_ID"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        locCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+        conCol.setCellValueFactory(new PropertyValueFactory<>("contact"));
+        typCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        startCol.setCellValueFactory(new PropertyValueFactory<>("startLocal"));
+        endCol.setCellValueFactory(new PropertyValueFactory<>("endLocal"));
+        aptCustNameCol.setCellValueFactory(new PropertyValueFactory<>("customer"));
+        userNameCol.setCellValueFactory(new PropertyValueFactory<>("user"));
+
+
 
     }
 
     @FXML
     void onActionViewMonth(ActionEvent event) {
+        appointmentTable.setItems(Query.getMonthAppointments());
+
+        aptIDCol.setCellValueFactory(new PropertyValueFactory<>("appointment_ID"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        locCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+        conCol.setCellValueFactory(new PropertyValueFactory<>("contact"));
+        typCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        startCol.setCellValueFactory(new PropertyValueFactory<>("startLocal"));
+        endCol.setCellValueFactory(new PropertyValueFactory<>("endLocal"));
+        aptCustNameCol.setCellValueFactory(new PropertyValueFactory<>("customer"));
+        userNameCol.setCellValueFactory(new PropertyValueFactory<>("user"));
 
     }
 
-    public void init(int uid, ResourceBundle rb) {
+    public void init() {
 
-        id = uid;
-        resourceBundle = rb;
 
         customerTable.setItems(Query.getCustomers());
 

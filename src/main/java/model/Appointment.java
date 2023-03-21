@@ -2,6 +2,7 @@ package model;
 
 import Database.Query;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -77,6 +78,23 @@ public class Appointment {
         customer = 0;
         user = 0;
 
+    }
+
+    public Appointment(int id, String ti, String ty, String d, Timestamp s, Timestamp e, int cus) {
+        appointment_ID =id;
+        title = ti;
+        type = ty;
+        description = d;
+        start = convertTStoZDT(s);
+        end = convertTStoZDT(e);
+        customer = cus;
+
+        startLocal = convertZDTtoLocal(start);
+        endLocal = convertZDTtoLocal(end);
+
+        // I don't think it matters for this one
+        startDB = s;
+        endDB = e;
     }
 
     public int getAppointment_ID() {
@@ -159,8 +177,8 @@ public class Appointment {
         contact = c;
     }
 
-    public void setCustomer(int customer) {
-        this.customer = customer;
+    public void setCustomer(int cu) {
+        customer = cu;
     }
 
     /**
@@ -227,9 +245,10 @@ public class Appointment {
      */
     public boolean isDuringOfficeHours() {
 
-        int easternStart = start.withZoneSameInstant(ZoneId.of("EST")).getHour();
-        int easternEnd = end.withZoneSameInstant(ZoneId.of("EST")).getHour();
+        int easternStart = start.withZoneSameInstant(ZoneId.of("America/New_York")).getHour();
+        int easternEnd = end.withZoneSameInstant(ZoneId.of("America/New_York")).getHour();
 
+        System.out.println("Start: " + easternStart +", End: " + easternEnd);
         // if the appointment start time is before 8 AM EST or after 10 for some reason
         if (easternStart < 8 || easternStart > 22) {
             return false;
@@ -247,7 +266,8 @@ public class Appointment {
      * @return true if there there is a conflict
      */
     public boolean hasConflict() {
-        return Query.checkForMeetings(startDB, endDB);
+
+        return Query.checkForMeetings(appointment_ID, startDB, endDB);
     }
 
 }
