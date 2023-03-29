@@ -1,5 +1,8 @@
 package controller;
 
+import Database.DBConnection;
+import Database.Query;
+import com.example.javaproject1.LogHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,28 +10,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Appointment;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.ResourceBundle;
-import java.time.ZoneId;
-import java.io.FileWriter;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import Database.DBConnection;
-import Database.Query;
-import model.Appointment;
-import com.example.javaproject1.LogHelper;
+import java.util.ResourceBundle;
 
 
 public class MainMenuController implements Initializable {
@@ -50,7 +44,7 @@ public class MainMenuController implements Initializable {
     // ResourceBundle rb = ResourceBundle.getBundle("language_files/rebu");
 
     // log file in the user's home directory
-    String fileName = System.getProperty("user.home") + "/login_activity.txt";
+    String fileName = "./login_activity.txt";
     File logFile = new File(fileName);
 
     @FXML
@@ -70,6 +64,15 @@ public class MainMenuController implements Initializable {
     @FXML
     private TextField username;
 
+    @FXML
+    private Button logInButton;
+
+    @FXML
+    private Button exitButton;
+
+    @FXML
+    private Button resetButton;
+
 
     /**
      * Clears username and password fields on click
@@ -83,7 +86,13 @@ public class MainMenuController implements Initializable {
 
     /**
      * Validates username and password for log in to application. Display
-     * language and time varies based on system locale
+     * language and time varies based on system locale.
+     *
+     * Within this method are two Lambda functions used to streamline
+     * the logging of either a successful login in,
+     * or a failed login, to the login_activity.txt file.
+     *
+     * The two Lambda Functions are goodLog() and badLog()
      * @param event login
      * @throws IOException
      */
@@ -91,14 +100,6 @@ public class MainMenuController implements Initializable {
     void onActionLogIn(ActionEvent event) throws IOException {
         String uname = username.getText();
         String pword = password.getText();
-
-        LogHelper goodlog=(s1, s2)-> {
-            return "User " + s1 + " successfully logged in at " + s2 + "\n";
-        };
-
-        LogHelper badLog=(s1, s2)->{
-            return "User " + s1 + " gave invalid log in at " + s2 + "\n";
-        };
 
 
         // Get ready to write to the log!
@@ -186,7 +187,27 @@ public class MainMenuController implements Initializable {
         pass_word.setText(rb.getString("password"));
         time_zone.setText(rb.getString("timezone"));
 
+        logInButton.setText(resourceBundle.getString("login"));
+        resetButton.setText(resourceBundle.getString("reset"));
+        exitButton.setText(resourceBundle.getString("exit"));
+
+
+
     }
+
+    /**
+     * Lambda function takes two strings and returns a string for logging of successfully login attempt
+     */
+    LogHelper goodlog=(s1, s2)-> {
+        return "User " + s1 + " successfully logged in at " + s2 + "\n";
+    };
+
+    /**
+     * Lambda function takes two strings and returns a string for logging of a failed login attempt
+     */
+    LogHelper badLog=(s1, s2)->{
+        return "User " + s1 + " gave invalid log in at " + s2 + "\n";
+    };
 
     private void displayAlert(int alertType) {
 

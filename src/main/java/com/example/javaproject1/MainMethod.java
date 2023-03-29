@@ -1,15 +1,13 @@
 package com.example.javaproject1;
 
+import Database.DBConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-import Database.DBConnection;
-
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 public class MainMethod extends Application {
 
@@ -33,7 +31,7 @@ public class MainMethod extends Application {
         //open Connection to DB
         DBConnection.startConnection();
         // To test the French locale uncomment the following line
-        //Locale.setDefault(new Locale("fr", "FR"));
+       // Locale.setDefault(new Locale("fr", "FR"));
 
         launch();
 
